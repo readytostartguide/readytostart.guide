@@ -1,572 +1,565 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2761
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-
-\f0\fs24 \cf0 <!DOCTYPE html>\
-<html lang="en">\
-<head>\
-    <meta charset="UTF-8">\
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">\
-    <title>N Seoul Tower - First Timer's Guide | ReadyToStart</title>\
-    <style>\
-        * \{\
-            margin: 0;\
-            padding: 0;\
-            box-sizing: border-box;\
-        \}\
-        \
-        body \{\
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;\
-            line-height: 1.6;\
-            color: #333;\
-            background: #f5f5f5;\
-        \}\
-        \
-        /* Header */\
-        header \{\
-            background: white;\
-            padding: 1rem 2rem;\
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);\
-            position: sticky;\
-            top: 0;\
-            z-index: 100;\
-        \}\
-        \
-        .header-content \{\
-            max-width: 1200px;\
-            margin: 0 auto;\
-            display: flex;\
-            justify-content: space-between;\
-            align-items: center;\
-        \}\
-        \
-        .logo \{\
-            font-size: 1.5rem;\
-            font-weight: bold;\
-            color: #667eea;\
-            text-decoration: none;\
-        \}\
-        \
-        .back-link \{\
-            color: #667eea;\
-            text-decoration: none;\
-            font-weight: 500;\
-        \}\
-        \
-        .back-link:hover \{\
-            text-decoration: underline;\
-        \}\
-        \
-        /* Hero Section */\
-        .hero \{\
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\
-            color: white;\
-            padding: 3rem 2rem;\
-            text-align: center;\
-        \}\
-        \
-        .hero h1 \{\
-            font-size: 2.5rem;\
-            margin-bottom: 0.5rem;\
-        \}\
-        \
-        .hero p \{\
-            font-size: 1.2rem;\
-            opacity: 0.95;\
-        \}\
-        \
-        /* Container */\
-        .container \{\
-            max-width: 1200px;\
-            margin: 0 auto;\
-            padding: 2rem;\
-        \}\
-        \
-        /* Quick Info Cards */\
-        .quick-info \{\
-            display: grid;\
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));\
-            gap: 1rem;\
-            margin-bottom: 2rem;\
-        \}\
-        \
-        .info-card \{\
-            background: white;\
-            padding: 1.5rem;\
-            border-radius: 10px;\
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);\
-            text-align: center;\
-        \}\
-        \
-        .info-card .icon \{\
-            font-size: 2rem;\
-            margin-bottom: 0.5rem;\
-        \}\
-        \
-        .info-card h3 \{\
-            color: #667eea;\
-            margin-bottom: 0.5rem;\
-            font-size: 1rem;\
-        \}\
-        \
-        .info-card p \{\
-            color: #666;\
-            font-size: 0.9rem;\
-        \}\
-        \
-        /* Section */\
-        .section \{\
-            background: white;\
-            padding: 2rem;\
-            border-radius: 10px;\
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);\
-            margin-bottom: 2rem;\
-        \}\
-        \
-        .section h2 \{\
-            color: #667eea;\
-            margin-bottom: 1.5rem;\
-            font-size: 1.8rem;\
-            border-bottom: 3px solid #667eea;\
-            padding-bottom: 0.5rem;\
-        \}\
-        \
-        /* Map Container */\
-        #map \{\
-            width: 100%;\
-            height: 400px;\
-            border-radius: 10px;\
-            margin-bottom: 1rem;\
-        \}\
-        \
-        #streetview \{\
-            width: 100%;\
-            height: 300px;\
-            border-radius: 10px;\
-        \}\
-        \
-        /* Directions */\
-        .directions-grid \{\
-            display: grid;\
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));\
-            gap: 1rem;\
-            margin-top: 1rem;\
-        \}\
-        \
-        .direction-card \{\
-            background: #f8f9fa;\
-            padding: 1.5rem;\
-            border-radius: 8px;\
-            border-left: 4px solid #667eea;\
-        \}\
-        \
-        .direction-card h3 \{\
-            color: #333;\
-            margin-bottom: 0.5rem;\
-            font-size: 1.1rem;\
-        \}\
-        \
-        .direction-card .route-info \{\
-            color: #666;\
-            font-size: 0.9rem;\
-            margin: 0.5rem 0;\
-        \}\
-        \
-        .direction-card .time \{\
-            color: #667eea;\
-            font-weight: bold;\
-        \}\
-        \
-        /* Tips List */\
-        .tips-list \{\
-            list-style: none;\
-            padding: 0;\
-        \}\
-        \
-        .tips-list li \{\
-            padding: 1rem;\
-            margin-bottom: 0.5rem;\
-            background: #f8f9fa;\
-            border-radius: 8px;\
-            border-left: 4px solid #667eea;\
-        \}\
-        \
-        .tips-list li strong \{\
-            color: #667eea;\
-            display: block;\
-            margin-bottom: 0.3rem;\
-        \}\
-        \
-        /* Parking Info */\
-        .parking-grid \{\
-            display: grid;\
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));\
-            gap: 1rem;\
-            margin-top: 1rem;\
-        \}\
-        \
-        .parking-option \{\
-            background: #f8f9fa;\
-            padding: 1.5rem;\
-            border-radius: 8px;\
-        \}\
-        \
-        .parking-option h3 \{\
-            color: #333;\
-            margin-bottom: 0.5rem;\
-        \}\
-        \
-        .parking-option .price \{\
-            color: #667eea;\
-            font-weight: bold;\
-            font-size: 1.1rem;\
-            margin: 0.5rem 0;\
-        \}\
-        \
-        /* What to Expect */\
-        .expect-timeline \{\
-            position: relative;\
-            padding-left: 2rem;\
-        \}\
-        \
-        .expect-timeline::before \{\
-            content: '';\
-            position: absolute;\
-            left: 0;\
-            top: 0;\
-            bottom: 0;\
-            width: 3px;\
-            background: #667eea;\
-        \}\
-        \
-        .timeline-item \{\
-            position: relative;\
-            margin-bottom: 2rem;\
-        \}\
-        \
-        .timeline-item::before \{\
-            content: '';\
-            position: absolute;\
-            left: -2.5rem;\
-            top: 0;\
-            width: 20px;\
-            height: 20px;\
-            background: #667eea;\
-            border-radius: 50%;\
-            border: 3px solid white;\
-        \}\
-        \
-        .timeline-item h3 \{\
-            color: #667eea;\
-            margin-bottom: 0.5rem;\
-        \}\
-        \
-        .timeline-item p \{\
-            color: #666;\
-            line-height: 1.8;\
-        \}\
-        \
-        /* Call to Action */\
-        .cta \{\
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\
-            color: white;\
-            padding: 2rem;\
-            border-radius: 10px;\
-            text-align: center;\
-        \}\
-        \
-        .cta h2 \{\
-            color: white;\
-            border: none;\
-            margin-bottom: 1rem;\
-        \}\
-        \
-        .cta button \{\
-            background: white;\
-            color: #667eea;\
-            padding: 1rem 2rem;\
-            border: none;\
-            border-radius: 8px;\
-            font-size: 1.1rem;\
-            font-weight: bold;\
-            cursor: pointer;\
-            transition: transform 0.3s;\
-        \}\
-        \
-        .cta button:hover \{\
-            transform: scale(1.05);\
-        \}\
-        \
-        /* Responsive */\
-        @media (max-width: 768px) \{\
-            .hero h1 \{\
-                font-size: 1.8rem;\
-            \}\
-            \
-            .container \{\
-                padding: 1rem;\
-            \}\
-            \
-            #map \{\
-                height: 300px;\
-            \}\
-        \}\
-    </style>\
-</head>\
-<body>\
-    <header>\
-        <div class="header-content">\
-            <a href="index.html" class="logo">\uc0\u55357 \u56960  ReadyToStart</a>\
-            <a href="index.html" class="back-link">\uc0\u8592  Back to Home</a>\
-        </div>\
-    </header>\
-    \
-    <div class="hero">\
-        <h1>\uc0\u55357 \u56828  N Seoul Tower (Namsan Tower)</h1>\
-        <p>Your complete first-timer's guide to visiting Seoul's iconic landmark</p>\
-    </div>\
-    \
-    <div class="container">\
-        <!-- Quick Info -->\
-        <div class="quick-info">\
-            <div class="info-card">\
-                <div class="icon">\uc0\u9200 </div>\
-                <h3>Best Time</h3>\
-                <p>Sunset (6-8 PM) for amazing views</p>\
-            </div>\
-            <div class="info-card">\
-                <div class="icon">\uc0\u55357 \u56983 </div>\
-                <h3>Driving Time</h3>\
-                <p>15-30 min from central Seoul</p>\
-            </div>\
-            <div class="info-card">\
-                <div class="icon">\uc0\u55357 \u56496 </div>\
-                <h3>Parking Fee</h3>\
-                <p>\uc0\u8361 2,000-3,000 per hour</p>\
-            </div>\
-            <div class="info-card">\
-                <div class="icon">\uc0\u55356 \u57259 </div>\
-                <h3>Entry Fee</h3>\
-                <p>\uc0\u8361 16,000 (Observatory)</p>\
-            </div>\
-        </div>\
-        \
-        <!-- Location Map -->\
-        <div class="section">\
-            <h2>\uc0\u55357 \u56525  Location & Navigation</h2>\
-            <div id="map"></div>\
-            <p style="margin-top: 1rem; color: #666;">\
-                <strong>Address:</strong> 105 Namsangongwon-gil, Yongsan-gu, Seoul<br>\
-                <strong>Coordinates:</strong> 37.5512\'b0 N, 126.9882\'b0 E\
-            </p>\
-        </div>\
-        \
-        <!-- Street View -->\
-        <div class="section">\
-            <h2>\uc0\u55357 \u56385 \u65039  Street View - What It Looks Like</h2>\
-            <div id="streetview"></div>\
-            <p style="margin-top: 1rem; color: #666;">\
-                This is the view you'll see when you arrive at the base parking area. The tower is visible from here!\
-            </p>\
-        </div>\
-        \
-        <!-- Driving Directions -->\
-        <div class="section">\
-            <h2>\uc0\u55357 \u56983  How to Get There (Driving)</h2>\
-            <div class="directions-grid">\
-                <div class="direction-card">\
-                    <h3>From Gangnam</h3>\
-                    <div class="route-info">\
-                        <div class="time">~20 minutes</div>\
-                        <p>Take Olympic Expressway \uc0\u8594  Exit at Hannam Bridge \u8594  Follow Namsan signs</p>\
-                    </div>\
-                </div>\
-                <div class="direction-card">\
-                    <h3>From Hongdae</h3>\
-                    <div class="route-info">\
-                        <div class="time">~25 minutes</div>\
-                        <p>Take Airport Railroad \uc0\u8594  Transfer at Seoul Station \u8594  Namsan Tunnel</p>\
-                    </div>\
-                </div>\
-                <div class="direction-card">\
-                    <h3>From Myeongdong</h3>\
-                    <div class="route-info">\
-                        <div class="time">~10 minutes</div>\
-                        <p>Walk or take cable car (recommended!) - very close</p>\
-                    </div>\
-                </div>\
-                <div class="direction-card">\
-                    <h3>From Itaewon</h3>\
-                    <div class="route-info">\
-                        <div class="time">~15 minutes</div>\
-                        <p>Head north on Itaewon-ro \uc0\u8594  Follow Namsan signs \u8594  Parking lot 2</p>\
-                    </div>\
-                </div>\
-            </div>\
-        </div>\
-        \
-        <!-- Parking -->\
-        <div class="section">\
-            <h2>\uc0\u55356 \u56703 \u65039  Parking Information</h2>\
-            <div class="parking-grid">\
-                <div class="parking-option">\
-                    <h3>Namsan Parking Lot 1 (Main)</h3>\
-                    <div class="price">\uc0\u8361 2,400/hour</div>\
-                    <p>Closest to cable car station. 165 spaces. Gets full on weekends by 2 PM.</p>\
-                    <p style="margin-top: 0.5rem;"><strong>Tip:</strong> Arrive before 11 AM on weekends</p>\
-                </div>\
-                <div class="parking-option">\
-                    <h3>Namsan Parking Lot 2</h3>\
-                    <div class="price">\uc0\u8361 2,000/hour</div>\
-                    <p>Larger lot, 5-minute walk uphill. Usually has space. 395 spaces available.</p>\
-                    <p style="margin-top: 0.5rem;"><strong>Tip:</strong> Better for weekends</p>\
-                </div>\
-                <div class="parking-option">\
-                    <h3>Alternative: Myeongdong Parking</h3>\
-                    <div class="price">\uc0\u8361 3,000/hour</div>\
-                    <p>Park in Myeongdong, take cable car up (\uc0\u8361 11,000 round trip). More scenic!</p>\
-                    <p style="margin-top: 0.5rem;"><strong>Tip:</strong> Best for first-timers</p>\
-                </div>\
-            </div>\
-        </div>\
-        \
-        <!-- First Timer Tips -->\
-        <div class="section">\
-            <h2>\uc0\u55357 \u56481  First-Timer Tips (Things Nobody Tells You)</h2>\
-            <ul class="tips-list">\
-                <li>\
-                    <strong>Don't panic about the winding road!</strong>\
-                    The road up Namsan is curvy with tight turns, but it's well-marked and wide enough. Drive slowly (30-40 km/h) and you'll be fine. Locals drive it daily.\
-                </li>\
-                <li>\
-                    <strong>The parking lot looks full? It's not.</strong>\
-                    Cars cycle through quickly. Wait 5-10 minutes and spots open up. Attendants will guide you.\
-                </li>\
-                <li>\
-                    <strong>Bring a light jacket!</strong>\
-                    It's 3-5\'b0C cooler at the top, even in summer. The observation deck can be windy.\
-                </li>\
-                <li>\
-                    <strong>Sunset is magical but crowded.</strong>\
-                    If you want photos without crowds, go at 4 PM (still good light) or after 9 PM (night city lights).\
-                </li>\
-                <li>\
-                    <strong>The "locks of love" fence is before the tower.</strong>\
-                    You'll see it on your walk from parking. Bring a lock if you want to participate!\
-                </li>\
-                <li>\
-                    <strong>Observation deck tickets sold on-site.</strong>\
-                    No need to buy online. Lines move fast except on weekends 6-8 PM.\
-                </li>\
-            </ul>\
-        </div>\
-        \
-        <!-- What to Expect -->\
-        <div class="section">\
-            <h2>\uc0\u55356 \u57263  What to Expect - Timeline</h2>\
-            <div class="expect-timeline">\
-                <div class="timeline-item">\
-                    <h3>Arrival & Parking (10 min)</h3>\
-                    <p>You'll see signs for "N Seoul Tower Parking" as you ascend. Follow them to Lot 1 or 2. Parking attendants wear orange vests and will direct you. Pay at automated machines before leaving (cash or card).</p>\
-                </div>\
-                <div class="timeline-item">\
-                    <h3>Walk to Tower Base (5-10 min)</h3>\
-                    <p>From parking, it's a gentle uphill walk on a paved path. You'll pass souvenir shops and the famous "Locks Terrace." The tower looms above you - it's impressive!</p>\
-                </div>\
-                <div class="timeline-item">\
-                    <h3>Ticket Purchase (5 min)</h3>\
-                    <p>Buy tickets at the ground floor. Staff speak basic English. Point to "Observatory" on the board. Credit cards accepted. You'll get a timed entry ticket.</p>\
-                </div>\
-                <div class="timeline-item">\
-                    <h3>Elevator to Observatory (2 min)</h3>\
-                    <p>High-speed elevator! Your ears might pop slightly. It's enclosed so no scary views on the way up. Groups of 20-30 people per trip.</p>\
-                </div>\
-                <div class="timeline-item">\
-                    <h3>Observation Deck (30-60 min)</h3>\
-                    <p>360\'b0 views of Seoul. Indoor and outdoor sections. Binoculars available (\uc0\u8361 500). Caf\'e9 on this floor. Take your time - it's what you came for!</p>\
-                </div>\
-                <div class="timeline-item">\
-                    <h3>Optional: Digital Observatory</h3>\
-                    <p>One floor up. Interactive screens, photo spots, small gift shop. Fun but not essential if you're short on time.</p>\
-                </div>\
-            </div>\
-        </div>\
-        \
-        <!-- Ready to Go CTA -->\
-        <div class="cta">\
-            <h2>You're Ready! \uc0\u55356 \u57225 </h2>\
-            <p style="margin-bottom: 1.5rem;">You now know everything a first-timer needs. The hardest part is just showing up - and you're prepared!</p>\
-            <button onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=37.5512,126.9882', '_blank')">\
-                Get Directions Now \uc0\u8594 \
-            </button>\
-        </div>\
-    </div>\
-    \
-    <script>\
-        // IMPORTANT: Replace 'YOUR_API_KEY_HERE' with your actual Google Maps API key\
-        const API_KEY = 'AIzaSyCFgIi3uNnwWaRgaCEX8tCTI_9O24AeITk';\
-        \
-        function initMap() \{\
-            // Seoul Tower coordinates\
-            const seoulTower = \{ lat: 37.5512, lng: 126.9882 \};\
-            \
-            // Initialize map\
-            const map = new google.maps.Map(document.getElementById('map'), \{\
-                zoom: 15,\
-                center: seoulTower,\
-                mapTypeId: 'roadmap'\
-            \});\
-            \
-            // Add marker\
-            const marker = new google.maps.Marker(\{\
-                position: seoulTower,\
-                map: map,\
-                title: 'N Seoul Tower',\
-                animation: google.maps.Animation.DROP\
-            \});\
-            \
-            // Info window\
-            const infoWindow = new google.maps.InfoWindow(\{\
-                content: '<div style="padding: 10px;"><h3>N Seoul Tower</h3><p>You are here! \uc0\u55356 \u57263 </p></div>'\
-            \});\
-            \
-            marker.addListener('click', () => \{\
-                infoWindow.open(map, marker);\
-            \});\
-            \
-            // Initialize Street View\
-            const panorama = new google.maps.StreetViewPanorama(\
-                document.getElementById('streetview'),\
-                \{\
-                    position: seoulTower,\
-                    pov: \{ heading: 165, pitch: 0 \},\
-                    zoom: 1\
-                \}\
-            );\
-            \
-            map.setStreetView(panorama);\
-        \}\
-        \
-        // Load Google Maps API\
-        function loadGoogleMapsAPI() \{\
-            if (API_KEY === 'YOUR_API_KEY_HERE') \{\
-                document.getElementById('map').innerHTML = '<div style="padding: 2rem; text-align: center; color: #666;"><h3>Map Preview</h3><p>Add your Google Maps API key to see the interactive map</p></div>';\
-                document.getElementById('streetview').innerHTML = '<div style="padding: 2rem; text-align: center; color: #666;"><h3>Street View Preview</h3><p>Add your Google Maps API key to see street view</p></div>';\
-                return;\
-            \}\
-            \
-            const script = document.createElement('script');\
-            script.src = `https://maps.googleapis.com/maps/api/js?key=$\{API_KEY\}&callback=initMap`;\
-            script.async = true;\
-            script.defer = true;\
-            document.head.appendChild(script);\
-        \}\
-        \
-        // Initialize when page loads\
-        window.addEventListener('load', loadGoogleMapsAPI);\
-    </script>\
-</body>\
-</html>}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N Seoul Tower - First Timer's Guide | ReadyToStart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        /* Header */
+        header {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Quick Info Cards */
+        .quick-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .info-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .info-card .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-card h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .info-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Section */
+        .section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+        
+        /* Map Container */
+        #map {
+            width: 100%;
+            height: 400px;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        #streetview {
+            width: 100%;
+            height: 300px;
+            border-radius: 10px;
+        }
+        
+        /* Directions */
+        .directions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .direction-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .direction-card h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .direction-card .route-info {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+        }
+        
+        .direction-card .time {
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        /* Tips List */
+        .tips-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .tips-list li {
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .tips-list li strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        
+        /* Parking Info */
+        .parking-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .parking-option {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+        
+        .parking-option h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .parking-option .price {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin: 0.5rem 0;
+        }
+        
+        /* What to Expect */
+        .expect-timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .expect-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #667eea;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background: #667eea;
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+        
+        .timeline-item h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-item p {
+            color: #666;
+            line-height: 1.8;
+        }
+        
+        /* Call to Action */
+        .cta {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .cta h2 {
+            color: white;
+            border: none;
+            margin-bottom: 1rem;
+        }
+        
+        .cta button {
+            background: white;
+            color: #667eea;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .cta button:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            #map {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">🚀 ReadyToStart</a>
+            <a href="index.html" class="back-link">← Back to Home</a>
+        </div>
+    </header>
+    
+    <div class="hero">
+        <h1>🗼 N Seoul Tower (Namsan Tower)</h1>
+        <p>Your complete first-timer's guide to visiting Seoul's iconic landmark</p>
+    </div>
+    
+    <div class="container">
+        <!-- Quick Info -->
+        <div class="quick-info">
+            <div class="info-card">
+                <div class="icon">⏰</div>
+                <h3>Best Time</h3>
+                <p>Sunset (6-8 PM) for amazing views</p>
+            </div>
+            <div class="info-card">
+                <div class="icon">🚗</div>
+                <h3>Driving Time</h3>
+                <p>15-30 min from central Seoul</p>
+            </div>
+            <div class="info-card">
+                <div class="icon">💰</div>
+                <h3>Parking Fee</h3>
+                <p>₩2,000-3,000 per hour</p>
+            </div>
+            <div class="info-card">
+                <div class="icon">🎫</div>
+                <h3>Entry Fee</h3>
+                <p>₩16,000 (Observatory)</p>
+            </div>
+        </div>
+        
+        <!-- Location Map -->
+        <div class="section">
+            <h2>📍 Location & Navigation</h2>
+            <div id="map"></div>
+            <p style="margin-top: 1rem; color: #666;">
+                <strong>Address:</strong> 105 Namsangongwon-gil, Yongsan-gu, Seoul<br>
+                <strong>Coordinates:</strong> 37.5512° N, 126.9882° E
+            </p>
+        </div>
+        
+        <!-- Street View -->
+        <div class="section">
+            <h2>👁️ Street View - What It Looks Like</h2>
+            <div id="streetview"></div>
+            <p style="margin-top: 1rem; color: #666;">
+                This is the view you'll see when you arrive at the base parking area. The tower is visible from here!
+            </p>
+        </div>
+        
+        <!-- Driving Directions -->
+        <div class="section">
+            <h2>🚗 How to Get There (Driving)</h2>
+            <div class="directions-grid">
+                <div class="direction-card">
+                    <h3>From Gangnam</h3>
+                    <div class="route-info">
+                        <div class="time">~20 minutes</div>
+                        <p>Take Olympic Expressway → Exit at Hannam Bridge → Follow Namsan signs</p>
+                    </div>
+                </div>
+                <div class="direction-card">
+                    <h3>From Hongdae</h3>
+                    <div class="route-info">
+                        <div class="time">~25 minutes</div>
+                        <p>Take Airport Railroad → Transfer at Seoul Station → Namsan Tunnel</p>
+                    </div>
+                </div>
+                <div class="direction-card">
+                    <h3>From Myeongdong</h3>
+                    <div class="route-info">
+                        <div class="time">~10 minutes</div>
+                        <p>Walk or take cable car (recommended!) - very close</p>
+                    </div>
+                </div>
+                <div class="direction-card">
+                    <h3>From Itaewon</h3>
+                    <div class="route-info">
+                        <div class="time">~15 minutes</div>
+                        <p>Head north on Itaewon-ro → Follow Namsan signs → Parking lot 2</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Parking -->
+        <div class="section">
+            <h2>🅿️ Parking Information</h2>
+            <div class="parking-grid">
+                <div class="parking-option">
+                    <h3>Namsan Parking Lot 1 (Main)</h3>
+                    <div class="price">₩2,400/hour</div>
+                    <p>Closest to cable car station. 165 spaces. Gets full on weekends by 2 PM.</p>
+                    <p style="margin-top: 0.5rem;"><strong>Tip:</strong> Arrive before 11 AM on weekends</p>
+                </div>
+                <div class="parking-option">
+                    <h3>Namsan Parking Lot 2</h3>
+                    <div class="price">₩2,000/hour</div>
+                    <p>Larger lot, 5-minute walk uphill. Usually has space. 395 spaces available.</p>
+                    <p style="margin-top: 0.5rem;"><strong>Tip:</strong> Better for weekends</p>
+                </div>
+                <div class="parking-option">
+                    <h3>Alternative: Myeongdong Parking</h3>
+                    <div class="price">₩3,000/hour</div>
+                    <p>Park in Myeongdong, take cable car up (₩11,000 round trip). More scenic!</p>
+                    <p style="margin-top: 0.5rem;"><strong>Tip:</strong> Best for first-timers</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- First Timer Tips -->
+        <div class="section">
+            <h2>💡 First-Timer Tips (Things Nobody Tells You)</h2>
+            <ul class="tips-list">
+                <li>
+                    <strong>Don't panic about the winding road!</strong>
+                    The road up Namsan is curvy with tight turns, but it's well-marked and wide enough. Drive slowly (30-40 km/h) and you'll be fine. Locals drive it daily.
+                </li>
+                <li>
+                    <strong>The parking lot looks full? It's not.</strong>
+                    Cars cycle through quickly. Wait 5-10 minutes and spots open up. Attendants will guide you.
+                </li>
+                <li>
+                    <strong>Bring a light jacket!</strong>
+                    It's 3-5°C cooler at the top, even in summer. The observation deck can be windy.
+                </li>
+                <li>
+                    <strong>Sunset is magical but crowded.</strong>
+                    If you want photos without crowds, go at 4 PM (still good light) or after 9 PM (night city lights).
+                </li>
+                <li>
+                    <strong>The "locks of love" fence is before the tower.</strong>
+                    You'll see it on your walk from parking. Bring a lock if you want to participate!
+                </li>
+                <li>
+                    <strong>Observation deck tickets sold on-site.</strong>
+                    No need to buy online. Lines move fast except on weekends 6-8 PM.
+                </li>
+            </ul>
+        </div>
+        
+        <!-- What to Expect -->
+        <div class="section">
+            <h2>🎯 What to Expect - Timeline</h2>
+            <div class="expect-timeline">
+                <div class="timeline-item">
+                    <h3>Arrival & Parking (10 min)</h3>
+                    <p>You'll see signs for "N Seoul Tower Parking" as you ascend. Follow them to Lot 1 or 2. Parking attendants wear orange vests and will direct you. Pay at automated machines before leaving (cash or card).</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Walk to Tower Base (5-10 min)</h3>
+                    <p>From parking, it's a gentle uphill walk on a paved path. You'll pass souvenir shops and the famous "Locks Terrace." The tower looms above you - it's impressive!</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Ticket Purchase (5 min)</h3>
+                    <p>Buy tickets at the ground floor. Staff speak basic English. Point to "Observatory" on the board. Credit cards accepted. You'll get a timed entry ticket.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Elevator to Observatory (2 min)</h3>
+                    <p>High-speed elevator! Your ears might pop slightly. It's enclosed so no scary views on the way up. Groups of 20-30 people per trip.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Observation Deck (30-60 min)</h3>
+                    <p>360° views of Seoul. Indoor and outdoor sections. Binoculars available (₩500). Café on this floor. Take your time - it's what you came for!</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Optional: Digital Observatory</h3>
+                    <p>One floor up. Interactive screens, photo spots, small gift shop. Fun but not essential if you're short on time.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Ready to Go CTA -->
+        <div class="cta">
+            <h2>You're Ready! 🎉</h2>
+            <p style="margin-bottom: 1.5rem;">You now know everything a first-timer needs. The hardest part is just showing up - and you're prepared!</p>
+            <button onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=37.5512,126.9882', '_blank')">
+                Get Directions Now →
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        // IMPORTANT: Replace 'YOUR_API_KEY_HERE' with your actual Google Maps API key
+        const API_KEY = 'AIzaSyCFgIi3uNnwWaRgaCEX8tCTI_9O24AeITk';
+        
+        function initMap() {
+            // Seoul Tower coordinates
+            const seoulTower = { lat: 37.5512, lng: 126.9882 };
+            
+            // Initialize map
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: seoulTower,
+                mapTypeId: 'roadmap'
+            });
+            
+            // Add marker
+            const marker = new google.maps.Marker({
+                position: seoulTower,
+                map: map,
+                title: 'N Seoul Tower',
+                animation: google.maps.Animation.DROP
+            });
+            
+            // Info window
+            const infoWindow = new google.maps.InfoWindow({
+                content: '<div style="padding: 10px;"><h3>N Seoul Tower</h3><p>You are here! 🎯</p></div>'
+            });
+            
+            marker.addListener('click', () => {
+                infoWindow.open(map, marker);
+            });
+            
+            // Initialize Street View
+            const panorama = new google.maps.StreetViewPanorama(
+                document.getElementById('streetview'),
+                {
+                    position: seoulTower,
+                    pov: { heading: 165, pitch: 0 },
+                    zoom: 1
+                }
+            );
+            
+            map.setStreetView(panorama);
+        }
+        
+        // Load Google Maps API
+        function loadGoogleMapsAPI() {
+            if (API_KEY === 'YOUR_API_KEY_HERE') {
+                document.getElementById('map').innerHTML = '<div style="padding: 2rem; text-align: center; color: #666;"><h3>Map Preview</h3><p>Add your Google Maps API key to see the interactive map</p></div>';
+                document.getElementById('streetview').innerHTML = '<div style="padding: 2rem; text-align: center; color: #666;"><h3>Street View Preview</h3><p>Add your Google Maps API key to see street view</p></div>';
+                return;
+            }
+            
+            const script = document.createElement('script');
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&callback=initMap`;
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+        }
+        
+        // Initialize when page loads
+        window.addEventListener('load', loadGoogleMapsAPI);
+    </script>
+</body>
+</html>
