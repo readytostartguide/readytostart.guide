@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Guide | ReadyToStart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        /* Header */
+        header {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #667eea;
+        }
+        
+        .loading h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .hero .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+        
+        .custom-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Section */
+        .section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+        
+        /* Quick Info Cards */
+        .quick-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .info-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .info-card .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-card h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .info-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Map Container */
+        #map {
+            width: 100%;
+            height: 400px;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        #streetview {
+            width: 100%;
+            height: 300px;
+            border-radius: 10px;
+        }
+        
+        /* Photos Grid */
+        .photos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .photo-item {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .photo-item:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Tips List */
+        .tips-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .tips-list li {
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .tips-list li strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #667eea;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background: #667eea;
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+        
+        .timeline-item h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-item p {
+            color: #666;
+            line-height: 1.8;
+        }
+        
+        /* CTA */
+        .cta {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .cta h2 {
+            color: white;
+            border: none;
+            margin-bottom: 1rem;
+        }
+        
+        .cta button {
+            background: white;
+            color: #667eea;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+            margin: 0.5rem;
+        }
+        
+        .cta button:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Auto-generated notice */
+        .auto-notice {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 5px;
+        }
+        
+        .auto-notice strong {
+            color: #856404;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            #map {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">🚀 ReadyToStart</a>
+            <a href="index.html" class="back-link">← Back to Search</a>
+        </div>
+    </header>
+    
+    <!-- Loading State -->
+    <div id="loadingState" class="loading">
+        <div class="spinner"></div>
+        <h2>Finding your location...</h2>
+        <p>Gathering first-timer information</p>
+    </div>
+    
+    <!-- Main Content (Hidden initially) -->
+    <div id="mainContent" style="display: none;">
+        <div class="hero">
+            <h1 id="locationName">Loading...</h1>
+            <p class="subtitle" id="locationSubtitle">Your complete first-timer's guide</p>
+            <div id="customBadge" style="display: none;" class="custom-badge">
+                ✨ Enhanced with real first-timer experiences
+            </div>
+        </div>
+        
+        <div class="container">
+            <!-- Auto-generated notice (shown when no custom tips) -->
+            <div id="autoNotice" class="auto-notice" style="display: none;">
+                <strong>📝 Auto-Generated Guide:</strong> This guide was automatically created using Google data. 
+                Know this place well? <a href="mailto:contribute@readytostart.guide" style="color: #667eea;">Share your first-timer tips!</a>
+            </div>
+            
+            <!-- Quick Info -->
+            <div id="quickInfo" class="quick-info" style="display: none;">
+                <!-- Populated by JavaScript -->
+            </div>
+            
+            <!-- Location Map -->
+            <div class="section">
+                <h2>📍 Location & Navigation</h2>
+                <div id="map"></div>
+                <p id="addressInfo" style="margin-top: 1rem; color: #666;">
+                    <!-- Address populated by JavaScript -->
+                </p>
+            </div>
+            
+            <!-- Photos -->
+            <div id="photosSection" class="section" style="display: none;">
+                <h2>📸 Photos</h2>
+                <div id="photosGrid" class="photos-grid">
+                    <!-- Photos populated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Street View -->
+            <div class="section">
+                <h2>👁️ Street View - What It Looks Like</h2>
+                <div id="streetview"></div>
+            </div>
+            
+            <!-- First Timer Tips -->
+            <div id="tipsSection" class="section" style="display: none;">
+                <h2>💡 First-Timer Tips</h2>
+                <ul id="tipsList" class="tips-list">
+                    <!-- Tips populated by JavaScript -->
+                </ul>
+            </div>
+            
+            <!-- What to Expect -->
+            <div id="timelineSection" class="section" style="display: none;">
+                <h2>🎯 What to Expect</h2>
+                <div id="timelineContent" class="timeline">
+                    <!-- Timeline populated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Ready to Go CTA -->
+            <div class="cta">
+                <h2>Ready to Go? 🎉</h2>
+                <p id="ctaText" style="margin-bottom: 1.5rem;">You've got all the information you need. The hardest part is just showing up!</p>
+                <button id="directionsBtn">Get Directions Now →</button>
+                <button onclick="window.location.href='index.html'">Search Another Place</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Include tips data -->
+    <script src="tips-data.js"></script>
+    
+    <script>
+        // IMPORTANT: Replace with your actual Google Maps API key
+        const API_KEY = 'AIzaSyB_GKAoEnP9zyZxolYiD8eb4zUxx4bH72Y';
+        
+        let map, panorama, place, customTipsData;
+        
+        // Get location from URL parameter
+        function getLocationFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('location') || params.get('q');
+        }
+        
+        // Initialize the page
+        function initPage() {
+            const searchLocation = getLocationFromURL();
+            
+            if (!searchLocation) {
+                document.getElementById('loadingState').innerHTML = 
+                    '<h2>No location specified</h2><p><a href="index.html">Go back to search</a></p>';
+                return;
+            }
+            
+            // Check for custom tips first
+            customTipsData = getCustomTips(searchLocation);
+            
+            if (customTipsData && customTipsData.has_custom_content) {
+                // Load custom content
+                loadCustomContent(searchLocation);
+            } else {
+                // Load auto-generated content
+                loadAutoGeneratedContent(searchLocation);
+            }
+        }
+        
+        // Load custom content (from tips-data.js)
+        function loadCustomContent(searchLocation) {
+            // Show custom badge
+            document.getElementById('customBadge').style.display = 'inline-block';
+            
+            // Set title
+            document.getElementById('locationName').textContent = customTipsData.display_name;
+            
+            // Show quick info
+            if (customTipsData.quick_info) {
+                const quickInfoHTML = `
+                    <div class="info-card">
+                        <div class="icon">⏰</div>
+                        <h3>Best Time</h3>
+                        <p>${customTipsData.quick_info.best_time}</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="icon">🚗</div>
+                        <h3>Driving Time</h3>
+                        <p>${customTipsData.quick_info.driving_time}</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="icon">💰</div>
+                        <h3>Parking Fee</h3>
+                        <p>${customTipsData.quick_info.parking_fee}</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="icon">🎫</div>
+                        <h3>Entry Fee</h3>
+                        <p>${customTipsData.quick_info.entry_fee}</p>
+                    </div>
+                `;
+                document.getElementById('quickInfo').innerHTML = quickInfoHTML;
+                document.getElementById('quickInfo').style.display = 'grid';
+            }
+            
+            // Show first-timer tips
+            if (customTipsData.first_timer_tips && customTipsData.first_timer_tips.length > 0) {
+                const tipsHTML = customTipsData.first_timer_tips.map(tip => `
+                    <li>
+                        <strong>${tip.title}</strong>
+                        ${tip.content}
+                    </li>
+                `).join('');
+                document.getElementById('tipsList').innerHTML = tipsHTML;
+                document.getElementById('tipsSection').style.display = 'block';
+            }
+            
+            // Show timeline
+            if (customTipsData.timeline && customTipsData.timeline.length > 0) {
+                const timelineHTML = customTipsData.timeline.map(item => `
+                    <div class="timeline-item">
+                        <h3>${item.title}</h3>
+                        <p>${item.content}</p>
+                    </div>
+                `).join('');
+                document.getElementById('timelineContent').innerHTML = timelineHTML;
+                document.getElementById('timelineSection').style.display = 'block';
+            }
+            
+            // Load Google Maps for this location
+            loadGoogleMapsAPI(searchLocation);
+        }
+        
+        // Load auto-generated content (using Google Places API)
+        function loadAutoGeneratedContent(searchLocation) {
+            // Show auto-notice
+            document.getElementById('autoNotice').style.display = 'block';
+            
+            // Set title
+            document.getElementById('locationName').textContent = searchLocation;
+            
+            // Load Google Maps
+            loadGoogleMapsAPI(searchLocation);
+        }
+        
+        // Initialize Google Maps
+        function initMap() {
+            const searchLocation = getLocationFromURL();
+            
+            // Create geocoder
+            const geocoder = new google.maps.Geocoder();
+            
+            // Geocode the location
+            geocoder.geocode({ address: searchLocation }, (results, status) => {
+                if (status === 'OK' && results[0]) {
+                    const location = results[0].geometry.location;
+                    
+                    // Create map
+                    map = new google.maps.Map(document.getElementById('map'), {
+                        zoom: 15,
+                        center: location,
+                        mapTypeId: 'roadmap'
+                    });
+                    
+                    // Add marker
+                    const marker = new google.maps.Marker({
+                        position: location,
+                        map: map,
+                        title: searchLocation,
+                        animation: google.maps.Animation.DROP
+                    });
+                    
+                    // Info window
+                    const infoWindow = new google.maps.InfoWindow({
+                        content: `<div style="padding: 10px;"><h3>${searchLocation}</h3><p>You are here! 🎯</p></div>`
+                    });
+                    
+                    marker.addListener('click', () => {
+                        infoWindow.open(map, marker);
+                    });
+                    
+                    // Set address info
+                    document.getElementById('addressInfo').innerHTML = 
+                        `<strong>Address:</strong> ${results[0].formatted_address}<br>
+                         <strong>Coordinates:</strong> ${location.lat().toFixed(4)}° N, ${location.lng().toFixed(4)}° E`;
+                    
+                    // Initialize Street View
+                    panorama = new google.maps.StreetViewPanorama(
+                        document.getElementById('streetview'),
+                        {
+                            position: location,
+                            pov: { heading: 165, pitch: 0 },
+                            zoom: 1
+                        }
+                    );
+                    
+                    map.setStreetView(panorama);
+                    
+                    // Set directions button
+                    document.getElementById('directionsBtn').onclick = function() {
+                        window.open(`https://www.google.com/maps/dir/?api=1&destination=${location.lat()},${location.lng()}`, '_blank');
+                    };
+                    
+                    // Try to get place details from Places API
+                    const service = new google.maps.places.PlacesService(map);
+                    service.findPlaceFromQuery({
+                        query: searchLocation,
+                        fields: ['name', 'rating', 'photos', 'opening_hours', 'formatted_phone_number', 'website']
+                    }, (results, status) => {
+                        if (status === google.maps.places.PlacesServiceStatus.OK && results[0]) {
+                            place = results[0];
+                            displayPlaceDetails(place);
+                        }
+                    });
+                    
+                    // Hide loading, show content
+                    document.getElementById('loadingState').style.display = 'none';
+                    document.getElementById('mainContent').style.display = 'block';
+                    
+                } else {
+                    document.getElementById('loadingState').innerHTML = 
+                        `<h2>Location not found</h2>
+                         <p>We couldn't find "${searchLocation}". Try searching for a more specific location.</p>
+                         <a href="index.html" style="display: inline-block; margin-top: 1rem; padding: 1rem 2rem; background: #667eea; color: white; text-decoration: none; border-radius: 8px;">Back to Search</a>`;
+                }
+            });
+        }
+        
+        // Display place details from Google Places API
+        function displayPlaceDetails(place) {
+            // Show photos if available
+            if (place.photos && place.photos.length > 0) {
+                const photosHTML = place.photos.slice(0, 6).map(photo => 
+                    `<img src="${photo.getUrl()}" alt="Location photo" class="photo-item">`
+                ).join('');
+                document.getElementById('photosGrid').innerHTML = photosHTML;
+                document.getElementById('photosSection').style.display = 'block';
+            }
+            
+            // If no custom tips, show some auto-generated tips based on place data
+            if (!customTipsData || !customTipsData.has_custom_content) {
+                const autoTips = [];
+                
+                if (place.rating) {
+                    autoTips.push({
+                        title: `Highly Rated (${place.rating}/5)`,
+                        content: 'This location has good reviews from visitors. Check recent reviews for current conditions.'
+                    });
+                }
+                
+                if (place.opening_hours) {
+                    autoTips.push({
+                        title: 'Check Opening Hours',
+                        content: 'Make sure to verify current opening hours before visiting, as they may change seasonally.'
+                    });
+                }
+                
+                autoTips.push({
+                    title: 'Plan Your Route',
+                    content: 'Use the map above to plan your route. Check traffic conditions before leaving, especially during rush hours.'
+                });
+                
+                autoTips.push({
+                    title: 'Take Photos',
+                    content: 'Don\'t forget your camera or phone! First visits are special - capture the memories.'
+                });
+                
+                if (autoTips.length > 0) {
+                    const tipsHTML = autoTips.map(tip => `
+                        <li>
+                            <strong>${tip.title}</strong>
+                            ${tip.content}
+                        </li>
+                    `).join('');
+                    document.getElementById('tipsList').innerHTML = tipsHTML;
+                    document.getElementById('tipsSection').style.display = 'block';
+                }
+            }
+        }
+        
+        // Load Google Maps API
+        function loadGoogleMapsAPI(searchLocation) {
+            if (API_KEY === 'YOUR_API_KEY_HERE') {
+                document.getElementById('loadingState').innerHTML = 
+                    '<h2>API Key Not Configured</h2><p>Please add your Google Maps API key to see the map.</p>';
+                return;
+            }
+            
+            const script = document.createElement('script');
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places&callback=initMap`;
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+        }
+        
+        // Initialize when page loads
+        window.addEventListener('load', initPage);
+    </script>
+</body>
+</html>
