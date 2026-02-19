@@ -13,23 +13,36 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f5f5f5;
+            line-height: 1.7;
+            color: #2c3e50;
+            background: #f8f9fa;
+        }
+        
+        /* Calm color palette */
+        :root {
+            --primary-color: #5dade2;
+            --primary-dark: #3498db;
+            --secondary-color: #76c7c0;
+            --warm-bg: #fef5e7;
+            --calm-bg: #ebf5fb;
+            --text-dark: #2c3e50;
+            --text-light: #5d6d7e;
+            --border-light: #d5dbdb;
+            --success-green: #52be80;
         }
         
         /* Header */
         header {
             background: white;
             padding: 1rem 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             position: sticky;
             top: 0;
             z-index: 100;
         }
         
         .header-content {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -38,36 +51,32 @@
         
         .logo {
             font-size: 1.5rem;
-            font-weight: bold;
-            color: #667eea;
+            font-weight: 600;
+            color: var(--primary-color);
             text-decoration: none;
         }
         
         .back-link {
-            color: #667eea;
+            color: var(--primary-color);
             text-decoration: none;
             font-weight: 500;
+            transition: color 0.3s;
         }
         
         .back-link:hover {
-            text-decoration: underline;
+            color: var(--primary-dark);
         }
         
         /* Loading State */
         .loading {
             text-align: center;
             padding: 4rem 2rem;
-            color: #667eea;
-        }
-        
-        .loading h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
+            color: var(--primary-color);
         }
         
         .spinner {
             border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
+            border-top: 4px solid var(--primary-color);
             border-radius: 50%;
             width: 50px;
             height: 50px;
@@ -82,140 +91,230 @@
         
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
-            padding: 3rem 2rem;
-            text-align: center;
+            padding: 2.5rem 2rem;
+        }
+        
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
         }
         
         .hero h1 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             margin-bottom: 0.5rem;
+            font-weight: 600;
         }
         
         .hero .subtitle {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             opacity: 0.95;
+            margin-bottom: 1rem;
         }
         
         .custom-badge {
             display: inline-block;
-            background: rgba(255, 255, 255, 0.3);
-            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 0.4rem 1rem;
             border-radius: 20px;
             font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        
+        /* Helpful Buttons */
+        .helpful-section {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
             margin-top: 1rem;
-        }
-        
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        
-        /* Section */
-        .section {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-        }
-        
-        .section h2 {
-            color: #667eea;
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-            border-bottom: 3px solid #667eea;
-            padding-bottom: 0.5rem;
-        }
-        
-        /* Quick Info Cards */
-        .quick-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            display: inline-flex;
+            align-items: center;
             gap: 1rem;
-            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
         
-        .info-card {
+        .helpful-section span {
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+        
+        .helpful-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--border-light);
             background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        
-        .info-card .icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .info-card h3 {
-            color: #667eea;
-            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
             font-size: 1rem;
+            transition: all 0.3s;
         }
         
-        .info-card p {
-            color: #666;
-            font-size: 0.9rem;
+        .helpful-btn:hover {
+            border-color: var(--primary-color);
+            background: var(--calm-bg);
         }
         
-        /* Map Container */
+        .helpful-btn.active {
+            border-color: var(--success-green);
+            background: #e8f8f5;
+        }
+        
+        .helpful-count {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        /* Main Layout */
+        .main-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+        
+        /* Main Content Area */
+        .content-area {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .sidebar-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        
+        .sidebar-card h3 {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        /* Map & Street View */
         #map {
             width: 100%;
-            height: 400px;
-            border-radius: 10px;
+            height: 250px;
+            border-radius: 8px;
             margin-bottom: 1rem;
         }
         
         #streetview {
             width: 100%;
-            height: 300px;
-            border-radius: 10px;
-        }
-        
-        /* Photos Grid */
-        .photos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        
-        .photo-item {
-            width: 100%;
             height: 200px;
+            border-radius: 8px;
+        }
+        
+        /* Quick Info */
+        .quick-info-item {
+            display: flex;
+            align-items: start;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: var(--calm-bg);
+            border-radius: 8px;
+        }
+        
+        .quick-info-item .icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .quick-info-item .info {
+            flex: 1;
+        }
+        
+        .quick-info-item .label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 0.2rem;
+        }
+        
+        .quick-info-item .value {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+        
+        /* Content Sections */
+        .content-section {
+            padding: 2rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .content-section:last-child {
+            border-bottom: none;
+        }
+        
+        .content-section h2 {
+            color: var(--primary-color);
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        
+        /* Tips with Photos */
+        .tip-item {
+            margin-bottom: 2rem;
+            background: var(--warm-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .tip-content {
+            padding: 1.5rem;
+        }
+        
+        .tip-item h3 {
+            color: var(--text-dark);
+            font-size: 1.15rem;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .tip-item p {
+            color: var(--text-light);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+        
+        .tip-photo {
+            width: 100%;
+            height: 250px;
             object-fit: cover;
+        }
+        
+        .tip-photo-caption {
+            padding: 0.8rem 1.5rem;
+            background: rgba(0,0,0,0.03);
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-style: italic;
+        }
+        
+        /* Video embed */
+        .tip-video {
+            width: 100%;
+            height: 300px;
             border-radius: 8px;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-        
-        .photo-item:hover {
-            transform: scale(1.05);
-        }
-        
-        /* Tips List */
-        .tips-list {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .tips-list li {
-            padding: 1rem;
-            margin-bottom: 0.5rem;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-        }
-        
-        .tips-list li strong {
-            color: #667eea;
-            display: block;
-            margin-bottom: 0.3rem;
+            margin-top: 1rem;
         }
         
         /* Timeline */
@@ -231,93 +330,219 @@
             top: 0;
             bottom: 0;
             width: 3px;
-            background: #667eea;
+            background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+            border-radius: 3px;
         }
         
         .timeline-item {
             position: relative;
             margin-bottom: 2rem;
+            background: var(--calm-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
         }
         
         .timeline-item::before {
             content: '';
             position: absolute;
-            left: -2.5rem;
-            top: 0;
-            width: 20px;
-            height: 20px;
-            background: #667eea;
+            left: -2.65rem;
+            top: 1.5rem;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border: 3px solid var(--primary-color);
             border-radius: 50%;
-            border: 3px solid white;
         }
         
         .timeline-item h3 {
-            color: #667eea;
-            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
         }
         
         .timeline-item p {
-            color: #666;
-            line-height: 1.8;
+            color: var(--text-light);
+            line-height: 1.7;
         }
         
-        /* CTA */
-        .cta {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 2rem;
-            border-radius: 10px;
+        .timeline-photo {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        /* Community Section */
+        .community-section {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            padding: 3rem 2rem;
             text-align: center;
+            margin-top: 3rem;
         }
         
-        .cta h2 {
-            color: white;
-            border: none;
+        .community-section h2 {
+            color: var(--text-dark);
+            font-size: 1.8rem;
             margin-bottom: 1rem;
         }
         
-        .cta button {
+        .community-section p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .community-btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(93, 173, 226, 0.3);
+        }
+        
+        .community-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(93, 173, 226, 0.4);
+        }
+        
+        /* Contact Form */
+        .contact-section {
             background: white;
-            color: #667eea;
-            padding: 1rem 2rem;
+            padding: 3rem 2rem;
+            max-width: 600px;
+            margin: 3rem auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+        
+        .contact-section h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            color: var(--text-dark);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--border-light);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary-color);
+            color: white;
             border: none;
             border-radius: 8px;
             font-size: 1.1rem;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.3s;
-            margin: 0.5rem;
+            transition: all 0.3s;
         }
         
-        .cta button:hover {
-            transform: scale(1.05);
+        .submit-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* CTA Button */
+        .cta-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--success-green);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(82, 190, 128, 0.3);
+        }
+        
+        .cta-btn:hover {
+            background: #229954;
+            transform: translateY(-2px);
         }
         
         /* Auto-generated notice */
         .auto-notice {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 1rem;
+            background: #fff9e6;
+            border-left: 4px solid #f39c12;
+            padding: 1.2rem;
             margin-bottom: 2rem;
-            border-radius: 5px;
+            border-radius: 8px;
         }
         
         .auto-notice strong {
-            color: #856404;
+            color: #d68910;
+        }
+        
+        .auto-notice a {
+            color: var(--primary-color);
+            font-weight: 600;
         }
         
         /* Responsive */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                order: -1;
+            }
+            
+            #map {
+                height: 300px;
+            }
+        }
+        
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 1.8rem;
             }
             
-            .container {
-                padding: 1rem;
+            .main-container {
+                padding: 0 1rem;
             }
             
-            #map {
-                height: 300px;
+            .content-section {
+                padding: 1.5rem;
             }
         }
     </style>
@@ -334,77 +559,117 @@
     <div id="loadingState" class="loading">
         <div class="spinner"></div>
         <h2>Finding your location...</h2>
-        <p>Gathering first-timer information</p>
+        <p>Gathering first-timer information & visuals</p>
     </div>
     
     <!-- Main Content (Hidden initially) -->
     <div id="mainContent" style="display: none;">
         <div class="hero">
-            <h1 id="locationName">Loading...</h1>
-            <p class="subtitle" id="locationSubtitle">Your complete first-timer's guide</p>
-            <div id="customBadge" style="display: none;" class="custom-badge">
-                ✨ Enhanced with real first-timer experiences
+            <div class="hero-content">
+                <h1 id="locationName">Loading...</h1>
+                <p class="subtitle" id="locationSubtitle">Your complete first-timer's guide with visuals</p>
+                <div id="customBadge" style="display: none;" class="custom-badge">
+                    ✨ Enhanced with real first-timer experiences
+                </div>
+                
+                <!-- Helpful Buttons -->
+                <div class="helpful-section">
+                    <span>Was this guide helpful?</span>
+                    <button class="helpful-btn" id="helpfulYes" onclick="markHelpful(true)">
+                        👍 Yes <span class="helpful-count" id="yesCount">(0)</span>
+                    </button>
+                    <button class="helpful-btn" id="helpfulNo" onclick="markHelpful(false)">
+                        👎 No <span class="helpful-count" id="noCount">(0)</span>
+                    </button>
+                </div>
             </div>
         </div>
         
-        <div class="container">
-            <!-- Auto-generated notice (shown when no custom tips) -->
-            <div id="autoNotice" class="auto-notice" style="display: none;">
-                <strong>📝 Auto-Generated Guide:</strong> This guide was automatically created using Google data. 
-                Know this place well? <a href="mailto:contribute@readytostart.guide" style="color: #667eea;">Share your first-timer tips!</a>
-            </div>
-            
-            <!-- Quick Info -->
-            <div id="quickInfo" class="quick-info" style="display: none;">
-                <!-- Populated by JavaScript -->
-            </div>
-            
-            <!-- Location Map -->
-            <div class="section">
-                <h2>📍 Location & Navigation</h2>
-                <div id="map"></div>
-                <p id="addressInfo" style="margin-top: 1rem; color: #666;">
-                    <!-- Address populated by JavaScript -->
-                </p>
-            </div>
-            
-            <!-- Photos -->
-            <div id="photosSection" class="section" style="display: none;">
-                <h2>📸 Photos</h2>
-                <div id="photosGrid" class="photos-grid">
-                    <!-- Photos populated by JavaScript -->
+        <div class="main-container">
+            <!-- Main Content Area -->
+            <div class="content-area">
+                <!-- Auto-generated notice (shown when no custom tips) -->
+                <div id="autoNotice" class="auto-notice" style="display: none; margin: 2rem;">
+                    <strong>📝 Auto-Generated Guide:</strong> This guide was automatically created. 
+                    Know this place well? <a href="mailto:readytostart.github@gmail.com?subject=First-timer%20tips%20for%20[Location]">Share your first-timer tips!</a>
+                </div>
+                
+                <!-- First-Timer Tips with Photos -->
+                <div id="tipsSection" class="content-section" style="display: none;">
+                    <h2>💡 First-Timer Tips - What Nobody Tells You</h2>
+                    <div id="tipsList">
+                        <!-- Tips populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- What to Expect Timeline -->
+                <div id="timelineSection" class="content-section" style="display: none;">
+                    <h2>🎯 What to Expect - Step by Step</h2>
+                    <div id="timelineContent" class="timeline">
+                        <!-- Timeline populated by JavaScript -->
+                    </div>
                 </div>
             </div>
             
-            <!-- Street View -->
-            <div class="section">
-                <h2>👁️ Street View - What It Looks Like</h2>
-                <div id="streetview"></div>
-            </div>
-            
-            <!-- First Timer Tips -->
-            <div id="tipsSection" class="section" style="display: none;">
-                <h2>💡 First-Timer Tips</h2>
-                <ul id="tipsList" class="tips-list">
-                    <!-- Tips populated by JavaScript -->
-                </ul>
-            </div>
-            
-            <!-- What to Expect -->
-            <div id="timelineSection" class="section" style="display: none;">
-                <h2>🎯 What to Expect</h2>
-                <div id="timelineContent" class="timeline">
-                    <!-- Timeline populated by JavaScript -->
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Map Card -->
+                <div class="sidebar-card">
+                    <h3>📍 Location & Map</h3>
+                    <div id="map"></div>
+                    <p id="addressInfo" style="font-size: 0.9rem; color: var(--text-light);">
+                        <!-- Address populated by JavaScript -->
+                    </p>
                 </div>
+                
+                <!-- Street View Card -->
+                <div class="sidebar-card">
+                    <h3>👁️ Street View</h3>
+                    <div id="streetview"></div>
+                </div>
+                
+                <!-- Quick Info Card -->
+                <div class="sidebar-card" id="quickInfoCard" style="display: none;">
+                    <h3>⚡ Quick Info</h3>
+                    <div id="quickInfo">
+                        <!-- Quick info populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Directions Button -->
+                <a href="#" id="directionsBtn" class="cta-btn" style="text-align: center; display: block;">
+                    🗺️ Get Directions
+                </a>
             </div>
-            
-            <!-- Ready to Go CTA -->
-            <div class="cta">
-                <h2>Ready to Go? 🎉</h2>
-                <p id="ctaText" style="margin-bottom: 1.5rem;">You've got all the information you need. The hardest part is just showing up!</p>
-                <button id="directionsBtn">Get Directions Now →</button>
-                <button onclick="window.location.href='index.html'">Search Another Place</button>
-            </div>
+        </div>
+        
+        <!-- Community Contribution Section -->
+        <div class="community-section">
+            <h2>🌟 Been Here? Share Your Experience!</h2>
+            <p>Your first-timer tips help thousands of nervous travelers feel confident. Every photo, tip, or story makes a difference!</p>
+            <a href="mailto:readytostart.github@gmail.com?subject=First-timer%20tips%20for%20[LOCATION]&body=Hi!%20I%27ve%20been%20to%20this%20location%20and%20want%20to%20share%20my%20first-timer%20experience.%0A%0ALocation%3A%20%0A%0AMy%20Tips%3A%0A1.%20%0A2.%20%0A3.%20%0A%0AWhat%20I%20wish%20I%20knew%20before%3A%20%0A%0A%28Optional%29%20Photos%3A%20Please%20attach%20any%20relevant%20photos!" class="community-btn" id="shareBtn">
+                Share Your Story
+            </a>
+        </div>
+        
+        <!-- Contact Form -->
+        <div class="contact-section">
+            <h2>💬 Questions or Suggestions?</h2>
+            <form id="contactForm" onsubmit="handleContact(event)">
+                <div class="form-group">
+                    <label for="contactName">Name</label>
+                    <input type="text" id="contactName" required>
+                </div>
+                <div class="form-group">
+                    <label for="contactEmail">Email</label>
+                    <input type="email" id="contactEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="contactMessage">Message</label>
+                    <textarea id="contactMessage" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
         </div>
     </div>
     
@@ -417,6 +682,18 @@
         const API_KEY = 'AIzaSyB_GKAoEnP9zyZxolYiD8eb4zUxx4bH72Y';
         
         let map, panorama, place, customTipsData;
+        let helpfulData = { yes: 0, no: 0, voted: false };
+        
+        // Photo URLs for each location (Wikimedia Commons & public domain)
+        const locationPhotos = {
+            "N Seoul Tower": {
+                "winding_road": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Road_to_N_Seoul_Tower.jpg/800px-Road_to_N_Seoul_Tower.jpg",
+                "parking": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Namsan_Cable_Car_Station.jpg/800px-Namsan_Cable_Car_Station.jpg",
+                "observatory": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/N_Seoul_Tower_2016.jpg/800px-N_Seoul_Tower_2016.jpg",
+                "locks": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Love_locks_at_N_Seoul_Tower.jpg/800px-Love_locks_at_N_Seoul_Tower.jpg"
+            }
+            // Add more locations as needed
+        };
         
         // Get location from URL parameter
         function getLocationFromURL() {
@@ -434,6 +711,12 @@
                 return;
             }
             
+            // Load helpful counts from localStorage
+            loadHelpfulCounts(searchLocation);
+            
+            // Update share button with location name
+            updateShareButton(searchLocation);
+            
             // Use country loader to get location data
             const result = await countryLoader.getTipsForLocation(searchLocation);
             
@@ -447,7 +730,7 @@
             }
         }
         
-        // Load custom content (from tips-data.js)
+        // Load custom content (from korea.js)
         function loadCustomContent(searchLocation) {
             // Show custom badge
             document.getElementById('customBadge').style.display = 'inline-block';
@@ -455,63 +738,108 @@
             // Set title
             document.getElementById('locationName').textContent = customTipsData.display_name;
             
-            // Show quick info
+            // Show quick info in sidebar
             if (customTipsData.quick_info) {
                 const quickInfoHTML = `
-                    <div class="info-card">
+                    <div class="quick-info-item">
                         <div class="icon">⏰</div>
-                        <h3>Best Time</h3>
-                        <p>${customTipsData.quick_info.best_time}</p>
+                        <div class="info">
+                            <div class="label">Best Time</div>
+                            <div class="value">${customTipsData.quick_info.best_time}</div>
+                        </div>
                     </div>
-                    <div class="info-card">
+                    <div class="quick-info-item">
                         <div class="icon">🚗</div>
-                        <h3>Driving Time</h3>
-                        <p>${customTipsData.quick_info.driving_time}</p>
+                        <div class="info">
+                            <div class="label">Getting There</div>
+                            <div class="value">${customTipsData.quick_info.driving_time}</div>
+                        </div>
                     </div>
-                    <div class="info-card">
-                        <div class="icon">💰</div>
-                        <h3>Parking Fee</h3>
-                        <p>${customTipsData.quick_info.parking_fee}</p>
+                    <div class="quick-info-item">
+                        <div class="icon">🅿️</div>
+                        <div class="info">
+                            <div class="label">Parking</div>
+                            <div class="value">${customTipsData.quick_info.parking_fee}</div>
+                        </div>
                     </div>
-                    <div class="info-card">
+                    <div class="quick-info-item">
                         <div class="icon">🎫</div>
-                        <h3>Entry Fee</h3>
-                        <p>${customTipsData.quick_info.entry_fee}</p>
+                        <div class="info">
+                            <div class="label">Entry Fee</div>
+                            <div class="value">${customTipsData.quick_info.entry_fee}</div>
+                        </div>
                     </div>
                 `;
                 document.getElementById('quickInfo').innerHTML = quickInfoHTML;
-                document.getElementById('quickInfo').style.display = 'grid';
+                document.getElementById('quickInfoCard').style.display = 'block';
             }
             
-            // Show first-timer tips
+            // Show first-timer tips with photos
             if (customTipsData.first_timer_tips && customTipsData.first_timer_tips.length > 0) {
-                const tipsHTML = customTipsData.first_timer_tips.map(tip => `
-                    <li>
-                        <strong>${tip.title}</strong>
-                        ${tip.content}
-                    </li>
-                `).join('');
+                const locationKey = Object.keys(locationPhotos).find(key => 
+                    searchLocation.toLowerCase().includes(key.toLowerCase())
+                );
+                const photos = locationPhotos[locationKey] || {};
+                
+                const tipsHTML = customTipsData.first_timer_tips.map((tip, index) => {
+                    // Match photos to specific tips based on keywords
+                    let photoUrl = '';
+                    let photoCaption = '';
+                    
+                    if (tip.title.toLowerCase().includes('road') || tip.title.toLowerCase().includes('winding')) {
+                        photoUrl = photos.winding_road;
+                        photoCaption = 'The winding road up Namsan - it looks scarier than it is!';
+                    } else if (tip.title.toLowerCase().includes('parking')) {
+                        photoUrl = photos.parking;
+                        photoCaption = 'Parking lot entrance - attendants are always there to help';
+                    } else if (tip.title.toLowerCase().includes('locks')) {
+                        photoUrl = photos.locks;
+                        photoCaption = 'The famous "Locks of Love" fence on your way up';
+                    } else if (tip.title.toLowerCase().includes('observation') || tip.title.toLowerCase().includes('sunset')) {
+                        photoUrl = photos.observatory;
+                        photoCaption = 'The observation deck at sunset - worth the wait!';
+                    }
+                    
+                    return `
+                        <div class="tip-item">
+                            <div class="tip-content">
+                                <h3>${tip.title}</h3>
+                                <p>${tip.content}</p>
+                            </div>
+                            ${photoUrl ? `
+                                <img src="${photoUrl}" alt="${tip.title}" class="tip-photo" onerror="this.style.display='none'">
+                                <div class="tip-photo-caption">${photoCaption}</div>
+                            ` : ''}
+                        </div>
+                    `;
+                }).join('');
+                
                 document.getElementById('tipsList').innerHTML = tipsHTML;
                 document.getElementById('tipsSection').style.display = 'block';
             }
             
-            // Show timeline
+            // Show timeline with photos
             if (customTipsData.timeline && customTipsData.timeline.length > 0) {
-                const timelineHTML = customTipsData.timeline.map(item => `
+                const timelineHTML = customTipsData.timeline.map((item, index) => `
                     <div class="timeline-item">
                         <h3>${item.title}</h3>
                         <p>${item.content}</p>
                     </div>
                 `).join('');
+                
                 document.getElementById('timelineContent').innerHTML = timelineHTML;
                 document.getElementById('timelineSection').style.display = 'block';
             }
             
             // Load Google Maps for this location
-            loadGoogleMapsAPI(searchLocation);
+            if (customTipsData.coordinates) {
+                loadGoogleMapsAPI(searchLocation, customTipsData.coordinates);
+            } else {
+                loadGoogleMapsAPI(searchLocation);
+            }
         }
         
-        // Load auto-generated content (using Google Places API)
+        // Load auto-generated content
         function loadAutoGeneratedContent(searchLocation) {
             // Show auto-notice
             document.getElementById('autoNotice').style.display = 'block';
@@ -526,140 +854,96 @@
         // Initialize Google Maps
         function initMap() {
             const searchLocation = getLocationFromURL();
+            const coords = customTipsData?.coordinates;
             
-            // Create geocoder
-            const geocoder = new google.maps.Geocoder();
-            
-            // Geocode the location
-            geocoder.geocode({ address: searchLocation }, (results, status) => {
-                if (status === 'OK' && results[0]) {
-                    const location = results[0].geometry.location;
-                    
-                    // Create map
-                    map = new google.maps.Map(document.getElementById('map'), {
-                        zoom: 15,
-                        center: location,
-                        mapTypeId: 'roadmap'
-                    });
-                    
-                    // Add marker
-                    const marker = new google.maps.Marker({
-                        position: location,
-                        map: map,
-                        title: searchLocation,
-                        animation: google.maps.Animation.DROP
-                    });
-                    
-                    // Info window
-                    const infoWindow = new google.maps.InfoWindow({
-                        content: `<div style="padding: 10px;"><h3>${searchLocation}</h3><p>You are here! 🎯</p></div>`
-                    });
-                    
-                    marker.addListener('click', () => {
-                        infoWindow.open(map, marker);
-                    });
-                    
-                    // Set address info
-                    document.getElementById('addressInfo').innerHTML = 
-                        `<strong>Address:</strong> ${results[0].formatted_address}<br>
-                         <strong>Coordinates:</strong> ${location.lat().toFixed(4)}° N, ${location.lng().toFixed(4)}° E`;
-                    
-                    // Initialize Street View
-                    panorama = new google.maps.StreetViewPanorama(
-                        document.getElementById('streetview'),
-                        {
-                            position: location,
-                            pov: { heading: 165, pitch: 0 },
-                            zoom: 1
-                        }
-                    );
-                    
-                    map.setStreetView(panorama);
-                    
-                    // Set directions button
-                    document.getElementById('directionsBtn').onclick = function() {
-                        window.open(`https://www.google.com/maps/dir/?api=1&destination=${location.lat()},${location.lng()}`, '_blank');
-                    };
-                    
-                    // Try to get place details from Places API
-                    const service = new google.maps.places.PlacesService(map);
-                    service.findPlaceFromQuery({
-                        query: searchLocation,
-                        fields: ['name', 'rating', 'photos', 'opening_hours', 'formatted_phone_number', 'website']
-                    }, (results, status) => {
-                        if (status === google.maps.places.PlacesServiceStatus.OK && results[0]) {
-                            place = results[0];
-                            displayPlaceDetails(place);
-                        }
-                    });
-                    
-                    // Hide loading, show content
-                    document.getElementById('loadingState').style.display = 'none';
-                    document.getElementById('mainContent').style.display = 'block';
-                    
-                } else {
-                    document.getElementById('loadingState').innerHTML = 
-                        `<h2>Location not found</h2>
-                         <p>We couldn't find "${searchLocation}". Try searching for a more specific location.</p>
-                         <a href="index.html" style="display: inline-block; margin-top: 1rem; padding: 1rem 2rem; background: #667eea; color: white; text-decoration: none; border-radius: 8px;">Back to Search</a>`;
-                }
-            });
+            if (coords) {
+                // Use provided coordinates
+                const location = new google.maps.LatLng(coords.lat, coords.lng);
+                createMapAndMarker(location, searchLocation);
+            } else {
+                // Geocode the location
+                const geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ address: searchLocation }, (results, status) => {
+                    if (status === 'OK' && results[0]) {
+                        const location = results[0].geometry.location;
+                        createMapAndMarker(location, searchLocation, results[0].formatted_address);
+                    } else {
+                        document.getElementById('loadingState').innerHTML = 
+                            `<h2>Location not found</h2>
+                             <p>We couldn't find "${searchLocation}". Try searching for a more specific location.</p>
+                             <a href="index.html" style="display: inline-block; margin-top: 1rem; padding: 1rem 2rem; background: var(--primary-color); color: white; text-decoration: none; border-radius: 8px;">Back to Search</a>`;
+                    }
+                });
+            }
         }
         
-        // Display place details from Google Places API
-        function displayPlaceDetails(place) {
-            // Show photos if available
-            if (place.photos && place.photos.length > 0) {
-                const photosHTML = place.photos.slice(0, 6).map(photo => 
-                    `<img src="${photo.getUrl()}" alt="Location photo" class="photo-item">`
-                ).join('');
-                document.getElementById('photosGrid').innerHTML = photosHTML;
-                document.getElementById('photosSection').style.display = 'block';
+        // Create map and marker
+        function createMapAndMarker(location, name, address) {
+            // Create map
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: location,
+                mapTypeId: 'roadmap',
+                styles: [
+                    {
+                        "featureType": "water",
+                        "elementType": "geometry",
+                        "stylers": [{ "color": "#a0d6eb" }]
+                    }
+                ]
+            });
+            
+            // Add marker
+            const marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                title: name,
+                animation: google.maps.Animation.DROP
+            });
+            
+            // Info window
+            const infoWindow = new google.maps.InfoWindow({
+                content: `<div style="padding: 10px;"><h3>${name}</h3><p>You are here! 🎯</p></div>`
+            });
+            
+            marker.addListener('click', () => {
+                infoWindow.open(map, marker);
+            });
+            
+            // Set address info
+            if (address) {
+                document.getElementById('addressInfo').innerHTML = 
+                    `<strong>Address:</strong> ${address}`;
+            } else {
+                document.getElementById('addressInfo').innerHTML = 
+                    `<strong>Coordinates:</strong> ${location.lat().toFixed(4)}° N, ${location.lng().toFixed(4)}° E`;
             }
             
-            // If no custom tips, show some auto-generated tips based on place data
-            if (!customTipsData || !customTipsData.has_custom_content) {
-                const autoTips = [];
-                
-                if (place.rating) {
-                    autoTips.push({
-                        title: `Highly Rated (${place.rating}/5)`,
-                        content: 'This location has good reviews from visitors. Check recent reviews for current conditions.'
-                    });
+            // Initialize Street View
+            panorama = new google.maps.StreetViewPanorama(
+                document.getElementById('streetview'),
+                {
+                    position: location,
+                    pov: { heading: 165, pitch: 0 },
+                    zoom: 1
                 }
-                
-                if (place.opening_hours) {
-                    autoTips.push({
-                        title: 'Check Opening Hours',
-                        content: 'Make sure to verify current opening hours before visiting, as they may change seasonally.'
-                    });
-                }
-                
-                autoTips.push({
-                    title: 'Plan Your Route',
-                    content: 'Use the map above to plan your route. Check traffic conditions before leaving, especially during rush hours.'
-                });
-                
-                autoTips.push({
-                    title: 'Take Photos',
-                    content: 'Don\'t forget your camera or phone! First visits are special - capture the memories.'
-                });
-                
-                if (autoTips.length > 0) {
-                    const tipsHTML = autoTips.map(tip => `
-                        <li>
-                            <strong>${tip.title}</strong>
-                            ${tip.content}
-                        </li>
-                    `).join('');
-                    document.getElementById('tipsList').innerHTML = tipsHTML;
-                    document.getElementById('tipsSection').style.display = 'block';
-                }
-            }
+            );
+            
+            map.setStreetView(panorama);
+            
+            // Set directions button
+            document.getElementById('directionsBtn').onclick = function(e) {
+                e.preventDefault();
+                window.open(`https://www.google.com/maps/dir/?api=1&destination=${location.lat()},${location.lng()}`, '_blank');
+            };
+            
+            // Hide loading, show content
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
         }
         
         // Load Google Maps API
-        function loadGoogleMapsAPI(searchLocation) {
+        function loadGoogleMapsAPI(searchLocation, coords) {
             if (API_KEY === 'YOUR_API_KEY_HERE') {
                 document.getElementById('loadingState').innerHTML = 
                     '<h2>API Key Not Configured</h2><p>Please add your Google Maps API key to see the map.</p>';
@@ -671,6 +955,82 @@
             script.async = true;
             script.defer = true;
             document.head.appendChild(script);
+        }
+        
+        // Helpful buttons functionality
+        function markHelpful(isHelpful) {
+            if (helpfulData.voted) {
+                alert('You\'ve already voted! Thank you for your feedback 😊');
+                return;
+            }
+            
+            const searchLocation = getLocationFromURL();
+            
+            if (isHelpful) {
+                helpfulData.yes++;
+                document.getElementById('helpfulYes').classList.add('active');
+            } else {
+                helpfulData.no++;
+                document.getElementById('helpfulNo').classList.add('active');
+            }
+            
+            helpfulData.voted = true;
+            
+            // Save to localStorage
+            localStorage.setItem(`helpful_${searchLocation}`, JSON.stringify(helpfulData));
+            
+            // Update display
+            document.getElementById('yesCount').textContent = `(${helpfulData.yes})`;
+            document.getElementById('noCount').textContent = `(${helpfulData.no})`;
+            
+            // Thank user
+            setTimeout(() => {
+                alert(isHelpful ? 
+                    'Thank you! Your feedback helps us improve 🙏' : 
+                    'Thanks for your feedback! We\'ll work on making this better 💪'
+                );
+            }, 300);
+        }
+        
+        // Load helpful counts from localStorage
+        function loadHelpfulCounts(location) {
+            const saved = localStorage.getItem(`helpful_${location}`);
+            if (saved) {
+                helpfulData = JSON.parse(saved);
+            }
+            
+            document.getElementById('yesCount').textContent = `(${helpfulData.yes})`;
+            document.getElementById('noCount').textContent = `(${helpfulData.no})`;
+            
+            if (helpfulData.voted) {
+                if (helpfulData.yes > 0) document.getElementById('helpfulYes').classList.add('active');
+                if (helpfulData.no > 0) document.getElementById('helpfulNo').classList.add('active');
+            }
+        }
+        
+        // Update share button with location name
+        function updateShareButton(location) {
+            const btn = document.getElementById('shareBtn');
+            const currentHref = btn.getAttribute('href');
+            btn.setAttribute('href', currentHref.replace('[LOCATION]', encodeURIComponent(location)));
+        }
+        
+        // Handle contact form
+        function handleContact(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const message = document.getElementById('contactMessage').value;
+            
+            const subject = `ReadyToStart Contact: Message from ${name}`;
+            const body = `Name: ${name}%0AEmail: ${email}%0A%0AMessage:%0A${encodeURIComponent(message)}`;
+            
+            window.location.href = `mailto:readytostart.github@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`;
+            
+            // Clear form
+            document.getElementById('contactForm').reset();
+            alert('Opening your email client... Thank you for reaching out! 📧');
         }
         
         // Initialize when page loads
