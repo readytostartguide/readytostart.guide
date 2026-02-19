@@ -246,17 +246,18 @@
     
     <section class="hero">
         <h1>Overcome the Fear of the First Time</h1>
-        <p>Your comprehensive guide to visiting new places and trying new experiences with confidence</p>
+        <p>Your comprehensive guide to visiting new places with confidence</p>
+        <p style="font-size: 1rem; opacity: 0.9; margin-top: 0.5rem;">🇰🇷 Currently featuring South Korea • More countries coming soon!</p>
         
         <div class="search-container">
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Where do you want to go? What do you want to try?">
+                <input type="text" id="searchInput" placeholder="Where in Korea do you want to go? e.g., Gangnam, Myeongdong, Busan...">
                 <button onclick="handleSearch()">Search</button>
             </div>
             <div class="category-tabs">
-                <button class="category-tab active" onclick="setCategory('places')">📍 New Places</button>
-                <button class="category-tab" onclick="setCategory('sports')">🏃 Sports & Activities</button>
-                <button class="category-tab" onclick="setCategory('social')">👥 Social Situations</button>
+                <button class="category-tab active" onclick="setCategory('places')">📍 Seoul & Korea</button>
+                <button class="category-tab" onclick="setCategory('sports')">🏃 Activities (Coming Soon)</button>
+                <button class="category-tab" onclick="setCategory('more')">🌏 More Countries (Coming Soon)</button>
             </div>
         </div>
     </section>
@@ -340,13 +341,13 @@
             const input = document.getElementById('searchInput');
             switch(category) {
                 case 'places':
-                    input.placeholder = "e.g., Downtown Seattle, Local DMV office, New gym...";
+                    input.placeholder = "e.g., Gangnam, Bukchon Hanok Village, Jeju Island...";
                     break;
                 case 'sports':
-                    input.placeholder = "e.g., Pickleball, Swimming, Rock climbing...";
+                    input.placeholder = "Coming soon: Pickleball courts, Swimming pools, etc.";
                     break;
-                case 'social':
-                    input.placeholder = "e.g., First day at work, Networking event...";
+                case 'more':
+                    input.placeholder = "Coming soon: Japan, Thailand, USA...";
                     break;
             }
         }

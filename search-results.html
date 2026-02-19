@@ -408,8 +408,9 @@
         </div>
     </div>
     
-    <!-- Include tips data -->
-    <script src="tips-data.js"></script>
+    <!-- Include country loader and data -->
+    <script src="country-loader.js"></script>
+    <script src="korea.js"></script>
     
     <script>
         // IMPORTANT: Replace with your actual Google Maps API key
@@ -424,7 +425,7 @@
         }
         
         // Initialize the page
-        function initPage() {
+        async function initPage() {
             const searchLocation = getLocationFromURL();
             
             if (!searchLocation) {
@@ -433,11 +434,12 @@
                 return;
             }
             
-            // Check for custom tips first
-            customTipsData = getCustomTips(searchLocation);
+            // Use country loader to get location data
+            const result = await countryLoader.getTipsForLocation(searchLocation);
             
-            if (customTipsData && customTipsData.has_custom_content) {
+            if (result.found && result.data && result.data.has_custom_content) {
                 // Load custom content
+                customTipsData = result.data;
                 loadCustomContent(searchLocation);
             } else {
                 // Load auto-generated content
