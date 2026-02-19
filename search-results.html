@@ -309,14 +309,6 @@
             font-style: italic;
         }
         
-        /* Video embed */
-        .tip-video {
-            width: 100%;
-            height: 300px;
-            border-radius: 8px;
-            margin-top: 1rem;
-        }
-        
         /* Timeline */
         .timeline {
             position: relative;
@@ -684,111 +676,287 @@
         let map, panorama, place, customTipsData;
         let helpfulData = { yes: 0, no: 0, voted: false };
         
-        // Video URLs - ONLY for highly relevant fear-busting content
-        // Videos should help overcome specific fears, not just entertain
-        const locationVideos = {
-            "N Seoul Tower": {
-                // Dashcam video showing the actual winding road drive
-                "road_drive": {
-                    type: "youtube",
-                    id: "dQw4w9WgXcQ", // REPLACE with actual dashcam video ID
-                    title: "🚗 Driving to N Seoul Tower - Full Route",
-                    description: "See the actual drive from start to finish. The curves look manageable when you watch it!",
-                    showFor: ["winding", "road", "panic", "driving"] // Keywords that trigger this video
-                }
-            }
-            // Add videos ONLY when they truly help overcome a fear
-            // Examples: Parking navigation, confusing entrances, scary routes
-        };
-        
-        // Helper to get relevant video for a tip
-        function getRelevantVideo(locationKey, tipTitle) {
-            const location = locationVideos[locationKey];
-            if (!location) return null;
-            
-            const tipLower = tipTitle.toLowerCase();
-            
-            for (const [videoKey, video] of Object.entries(location)) {
-                if (video.showFor.some(keyword => tipLower.includes(keyword))) {
-                    return video;
-                }
-            }
-            
-            return null;
-        }
-        
         // Photo URLs for each location - FEAR-FOCUSED theme
-        // These photos should REASSURE, not just look pretty
+        // Each photo addresses a specific fear or concern
         const locationPhotos = {
             "N Seoul Tower": {
-                // Shows the winding road WITH clear signs - proves "it's manageable"
                 "winding_road": {
                     url: "https://images.unsplash.com/photo-1449074427733-e8dfa59b8262?w=800&h=500&fit=crop",
-                    caption: "The winding road with clear signs - locals drive this daily!",
-                    fallback: "🛣️ Winding Road View"
+                    caption: "The winding road with clear signs and barriers - locals drive this daily!",
+                    fallback: "🛣️ Winding Road"
                 },
-                // Shows parking attendants helping - proves "you're not alone"
                 "parking": {
                     url: "https://images.unsplash.com/photo-1590674899484-d5640e854abe?w=800&h=500&fit=crop",
-                    caption: "Parking attendants in orange vests guide you - no need to worry!",
+                    caption: "Parking attendants in orange vests guide every car - you're not alone!",
                     fallback: "🅿️ Parking Area"
-                },
-                // Shows people in jackets enjoying view - proves "bring a jacket is real advice"
-                "jacket": {
-                    url: "https://images.unsplash.com/photo-1542224566-6e85f2e6772f?w=800&h=500&fit=crop",
-                    caption: "Visitors enjoying the view in light jackets - it's cooler up here!",
-                    fallback: "🧥 Observation Deck"
-                },
-                // Shows the locks fence with happy couples - proves "it's a fun experience"
-                "locks": {
-                    url: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&h=500&fit=crop",
-                    caption: "The famous 'Locks of Love' fence - bring your own lock!",
-                    fallback: "🔒 Love Locks"
-                },
-                // Shows crowd level at sunset - proves "it's crowded but manageable"
-                "sunset_crowd": {
-                    url: "https://images.unsplash.com/photo-1505852679233-d9fd70aff56d?w=800&h=500&fit=crop",
-                    caption: "Sunset crowd - busy but worth it! Come at 4 PM for fewer people.",
-                    fallback: "🌅 Sunset View"
                 }
             },
             
             "Gangnam": {
-                "subway_exit": {
+                "subway_station": {
                     url: "https://images.unsplash.com/photo-1583468323330-9032ad490fed?w=800&h=500&fit=crop",
-                    caption: "Gangnam Station exit - well-marked signs make navigation easy",
-                    fallback: "🚇 Station Exit"
+                    caption: "Gangnam Station with clear English signs - navigation is easier than you think",
+                    fallback: "🚇 Station"
                 },
-                "crowded_street": {
+                "street_scene": {
                     url: "https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=800&h=500&fit=crop",
-                    caption: "Peak crowd level on Friday night - this is what to expect!",
-                    fallback: "👥 Street Scene"
+                    caption: "Typical evening crowd - busy but manageable, everyone's just walking",
+                    fallback: "🏙️ Street"
                 }
             },
             
             "Myeongdong": {
-                "street_food": {
-                    url: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&h=500&fit=crop",
-                    caption: "Street food vendors setting up around 5 PM",
-                    fallback: "🍡 Street Food"
-                },
                 "shopping_street": {
                     url: "https://images.unsplash.com/photo-1441986380878-c4248f5b8b5b?w=800&h=500&fit=crop",
-                    caption: "The main pedestrian street - manageable crowd on weekday afternoon",
-                    fallback: "🛍️ Shopping Area"
+                    caption: "Main shopping street on weekday afternoon - crowds are manageable",
+                    fallback: "🛍️ Shopping"
+                },
+                "street_food": {
+                    url: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&h=500&fit=crop",
+                    caption: "Street food vendors setting up around 5 PM - the fun begins!",
+                    fallback: "🍡 Food"
+                }
+            },
+            
+            "Hongdae": {
+                "street_art": {
+                    url: "https://images.unsplash.com/photo-1569163139394-de4798aa62b6?w=800&h=500&fit=crop",
+                    caption: "Colorful street art in side alleys - the real Hongdae charm",
+                    fallback: "🎨 Art"
+                },
+                "young_crowd": {
+                    url: "https://images.unsplash.com/photo-1542224566-6e85f2e6772f?w=800&h=500&fit=crop",
+                    caption: "Weekend evening vibe - energetic but friendly, all ages welcome",
+                    fallback: "👥 Scene"
+                }
+            },
+            
+            "COEX Mall": {
+                "library": {
+                    url: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&h=500&fit=crop",
+                    caption: "Starfield Library on weekday morning - peaceful browsing possible",
+                    fallback: "📚 Library"
+                },
+                "mall_interior": {
+                    url: "https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=800&h=500&fit=crop",
+                    caption: "Underground mall corridors - well-lit and clearly marked with signs",
+                    fallback: "🏬 Mall"
+                }
+            },
+            
+            "Dongdaemun Design Plaza": {
+                "night_view": {
+                    url: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&h=500&fit=crop",
+                    caption: "DDP illuminated at night - stunning architecture, easy to photograph",
+                    fallback: "🌃 Night"
+                },
+                "interior": {
+                    url: "https://images.unsplash.com/photo-1505852679233-d9fd70aff56d?w=800&h=500&fit=crop",
+                    caption: "Spacious interior with ramps (no stairs!) - accessible for everyone",
+                    fallback: "🏛️ Interior"
                 }
             },
             
             "Bukchon Hanok Village": {
-                "narrow_alley": {
+                "narrow_street": {
                     url: "https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=800&h=500&fit=crop",
-                    caption: "Traditional alley - steep but paved! Wear good walking shoes.",
-                    fallback: "🏘️ Village Alley"
+                    caption: "Steep alleys in early morning - peaceful before tour groups arrive",
+                    fallback: "🏘️ Alley"
                 },
-                "tourists": {
+                "hanbok_rental": {
                     url: "https://images.unsplash.com/photo-1509023464722-18d996393ca8?w=800&h=500&fit=crop",
-                    caption: "Tour groups arrive after 10 AM - visit early to avoid this!",
-                    fallback: "👨‍👩‍👧‍👦 Morning Visitors"
+                    caption: "Visitors in hanbok taking photos - rental shops everywhere, easy to join!",
+                    fallback: "👘 Hanbok"
+                }
+            },
+            
+            "Insadong": {
+                "traditional_street": {
+                    url: "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&h=500&fit=crop",
+                    caption: "Main street on Sunday (car-free day) - relaxed pedestrian atmosphere",
+                    fallback: "🎋 Street"
+                },
+                "tea_house": {
+                    url: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=800&h=500&fit=crop",
+                    caption: "Traditional tea house interior - quiet escape from shopping crowds",
+                    fallback: "🍵 Tea"
+                }
+            },
+            
+            "Gyeongbokgung Palace": {
+                "main_gate": {
+                    url: "https://images.unsplash.com/photo-1532960401447-59f4706e1243?w=800&h=500&fit=crop",
+                    caption: "Main gate with tourists in hanbok - wearing hanbok gets you FREE entry!",
+                    fallback: "🏯 Gate"
+                },
+                "palace_grounds": {
+                    url: "https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=800&h=500&fit=crop",
+                    caption: "Spacious palace grounds on weekday - plenty of room to explore calmly",
+                    fallback: "⛩️ Grounds"
+                }
+            },
+            
+            "Changdeokgung Palace": {
+                "secret_garden": {
+                    url: "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?w=800&h=500&fit=crop",
+                    caption: "Secret Garden in fall - book your tour online 2-3 days ahead!",
+                    fallback: "🌳 Garden"
+                },
+                "palace_path": {
+                    url: "https://images.unsplash.com/photo-1505672678657-cc7037095e60?w=800&h=500&fit=crop",
+                    caption: "Garden walking path - paved but uneven, wear comfortable shoes",
+                    fallback: "🚶 Path"
+                }
+            },
+            
+            "Lotte World": {
+                "theme_park": {
+                    url: "https://images.unsplash.com/photo-1509023464722-18d996393ca8?w=800&h=500&fit=crop",
+                    caption: "Indoor section on Tuesday - see the difference from weekend crowds!",
+                    fallback: "🎢 Park"
+                },
+                "crowd_level": {
+                    url: "https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=800&h=500&fit=crop",
+                    caption: "Weekend crowd at popular ride - arrive early or come on weekdays",
+                    fallback: "👨‍👩‍👧‍👦 Crowd"
+                }
+            },
+            
+            "Itaewon": {
+                "main_street": {
+                    url: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&h=500&fit=crop",
+                    caption: "Main Itaewon street - English signs everywhere, expat-friendly area",
+                    fallback: "🌍 Street"
+                },
+                "international_food": {
+                    url: "https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=800&h=500&fit=crop",
+                    caption: "International restaurant district - authentic cuisine from around the world",
+                    fallback: "🍽️ Food"
+                }
+            },
+            
+            "Han River Parks": {
+                "picnic_area": {
+                    url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=500&fit=crop",
+                    caption: "Sunset picnic at Yeouido - locals order delivery right to the park!",
+                    fallback: "🌅 Picnic"
+                },
+                "bike_path": {
+                    url: "https://images.unsplash.com/photo-1474552226712-ac0f0961a954?w=800&h=500&fit=crop",
+                    caption: "Bike rental station - ₩3,000/hour, bike paths connect all parks",
+                    fallback: "🚴 Bikes"
+                }
+            },
+            
+            "Cheonggyecheon Stream": {
+                "stream_walk": {
+                    url: "https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=800&h=500&fit=crop",
+                    caption: "Stream walkway in city center - 5-10°C cooler than street level!",
+                    fallback: "💧 Stream"
+                },
+                "lantern_festival": {
+                    url: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&h=500&fit=crop",
+                    caption: "Lantern Festival in November - thousands of free lanterns to enjoy",
+                    fallback: "🏮 Lanterns"
+                }
+            },
+            
+            "Gwangjang Market": {
+                "food_stalls": {
+                    url: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&h=500&fit=crop",
+                    caption: "Evening food stalls - the ajummas are friendly! Smile and try everything",
+                    fallback: "🍜 Food"
+                },
+                "bindaetteok": {
+                    url: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=800&h=500&fit=crop",
+                    caption: "Fresh bindaetteok (mung bean pancake) being made - market specialty!",
+                    fallback: "🥞 Pancake"
+                }
+            },
+            
+            "Noryangjin Fish Market": {
+                "live_seafood": {
+                    url: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&h=500&fit=crop",
+                    caption: "Live seafood tanks - buy downstairs, cook upstairs system explained",
+                    fallback: "🦞 Seafood"
+                },
+                "market_scene": {
+                    url: "https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=800&h=500&fit=crop",
+                    caption: "Early morning auction scene - arrive at 5 AM to watch from observation deck",
+                    fallback: "🐟 Market"
+                }
+            },
+            
+            "Namdaemun Market": {
+                "market_entrance": {
+                    url: "https://images.unsplash.com/photo-1441986380878-c4248f5b8b5b?w=800&h=500&fit=crop",
+                    caption: "Main market entrance on weekday - 10,000+ stalls, grab a map at info center",
+                    fallback: "🏪 Entrance"
+                },
+                "food_alley": {
+                    url: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&h=500&fit=crop",
+                    caption: "Food alley near Gate 5 - famous hotteok (sweet pancakes) for ₩1,000",
+                    fallback: "🥟 Food"
+                }
+            },
+            
+            "Olympic Park": {
+                "cherry_blossoms": {
+                    url: "https://images.unsplash.com/photo-1522383225653-ed111181a951?w=800&h=500&fit=crop",
+                    caption: "Cherry blossom path in early April - arrive by 8 AM on weekends for parking",
+                    fallback: "🌸 Blossoms"
+                },
+                "park_size": {
+                    url: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=500&fit=crop",
+                    caption: "Vast park grounds - rent bikes or take free shuttle, walking it all is exhausting",
+                    fallback: "🌳 Park"
+                }
+            },
+            
+            "Seoul Sky Observatory": {
+                "observation_deck": {
+                    url: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=800&h=500&fit=crop",
+                    caption: "123rd floor view - book sunset tickets 2-3 weeks ahead, they sell out fast",
+                    fallback: "🏙️ View"
+                },
+                "glass_floor": {
+                    url: "https://images.unsplash.com/photo-1486299267070-83823f5448dd?w=800&h=500&fit=crop",
+                    caption: "Glass floor on 120th floor - safe but terrifying! Remove shoes to walk on it",
+                    fallback: "👟 Floor"
+                }
+            },
+            
+            "Jogyesa Temple": {
+                "temple_courtyard": {
+                    url: "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&h=500&fit=crop",
+                    caption: "Peaceful courtyard in city center - free entry, donation box available",
+                    fallback: "🛕 Temple"
+                },
+                "lanterns": {
+                    url: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&h=500&fit=crop",
+                    caption: "Buddha's Birthday lanterns in May - thousands of colorful lanterns at night",
+                    fallback: "🏮 Lanterns"
+                }
+            },
+            
+            "DMZ Tour": {
+                "tour_bus": {
+                    url: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&h=500&fit=crop",
+                    caption: "Tour bus departure - BRING YOUR PASSPORT! They check at checkpoints",
+                    fallback: "🚌 Bus"
+                },
+                "jsa_dress": {
+                    url: "https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?w=800&h=500&fit=crop",
+                    caption: "JSA dress code example - no ripped jeans, no logos, business casual required",
+                    fallback: "👔 Dress"
+                }
+            },
+            
+            "Namdaemun Gate": {
+                "gate_view": {
+                    url: "https://images.unsplash.com/photo-1532960401447-59f4706e1243?w=800&h=500&fit=crop",
+                    caption: "National Treasure No. 1 in traffic circle - use underground passage to reach it",
+                    fallback: "🏛️ Gate"
                 }
             }
         };
@@ -962,13 +1130,9 @@
                 const tipsHTML = customTipsData.first_timer_tips.map((tip, index) => {
                     // Match photos to specific tips based on keywords
                     let photo = null;
-                    let video = null;
                     
                     if (locationKey) {
                         const tipLower = tip.title.toLowerCase();
-                        
-                        // Check for relevant video first (takes priority for fear-busting)
-                        video = getRelevantVideo(locationKey, tip.title);
                         
                         // Smart keyword matching for fear-focused photos
                         if (tipLower.includes('road') || tipLower.includes('winding') || tipLower.includes('curves') || tipLower.includes('driving')) {
@@ -977,18 +1141,30 @@
                             photo = getPhoto(locationKey, 'parking');
                         } else if (tipLower.includes('jacket') || tipLower.includes('cold') || tipLower.includes('windy')) {
                             photo = getPhoto(locationKey, 'jacket');
-                        } else if (tipLower.includes('locks') || tipLower.includes('love')) {
-                            photo = getPhoto(locationKey, 'locks');
-                        } else if (tipLower.includes('sunset') || tipLower.includes('crowd')) {
-                            photo = getPhoto(locationKey, 'sunset_crowd');
+                        } else if (tipLower.includes('crowd') || tipLower.includes('busy')) {
+                            photo = getPhoto(locationKey, 'crowd_level') || getPhoto(locationKey, 'young_crowd') || getPhoto(locationKey, 'street_scene');
                         } else if (tipLower.includes('subway') || tipLower.includes('station') || tipLower.includes('exit')) {
-                            photo = getPhoto(locationKey, 'subway_exit');
+                            photo = getPhoto(locationKey, 'subway_station');
                         } else if (tipLower.includes('street') || tipLower.includes('alley')) {
-                            photo = getPhoto(locationKey, 'narrow_alley') || getPhoto(locationKey, 'shopping_street');
+                            photo = getPhoto(locationKey, 'narrow_street') || getPhoto(locationKey, 'main_street') || getPhoto(locationKey, 'shopping_street');
                         } else if (tipLower.includes('food')) {
-                            photo = getPhoto(locationKey, 'street_food');
+                            photo = getPhoto(locationKey, 'street_food') || getPhoto(locationKey, 'food_stalls') || getPhoto(locationKey, 'international_food');
                         } else if (tipLower.includes('tourist') || tipLower.includes('group')) {
-                            photo = getPhoto(locationKey, 'tourists');
+                            photo = getPhoto(locationKey, 'tourists') || getPhoto(locationKey, 'hanbok_rental');
+                        } else if (tipLower.includes('library') || tipLower.includes('starfield')) {
+                            photo = getPhoto(locationKey, 'library');
+                        } else if (tipLower.includes('temple')) {
+                            photo = getPhoto(locationKey, 'temple_courtyard') || getPhoto(locationKey, 'lanterns');
+                        } else if (tipLower.includes('palace') || tipLower.includes('hanok')) {
+                            photo = getPhoto(locationKey, 'main_gate') || getPhoto(locationKey, 'palace_grounds') || getPhoto(locationKey, 'secret_garden');
+                        } else if (tipLower.includes('market')) {
+                            photo = getPhoto(locationKey, 'food_stalls') || getPhoto(locationKey, 'market_entrance') || getPhoto(locationKey, 'live_seafood');
+                        } else if (tipLower.includes('passport') || tipLower.includes('dmz') || tipLower.includes('dress')) {
+                            photo = getPhoto(locationKey, 'tour_bus') || getPhoto(locationKey, 'jsa_dress');
+                        } else if (tipLower.includes('bike') || tipLower.includes('picnic')) {
+                            photo = getPhoto(locationKey, 'bike_path') || getPhoto(locationKey, 'picnic_area');
+                        } else if (tipLower.includes('view') || tipLower.includes('observation') || tipLower.includes('glass')) {
+                            photo = getPhoto(locationKey, 'observation_deck') || getPhoto(locationKey, 'glass_floor');
                         }
                     }
                     
@@ -997,18 +1173,6 @@
                             <div class="tip-content">
                                 <h3>${tip.title}</h3>
                                 <p>${tip.content}</p>
-                                ${video ? `
-                                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(93, 173, 226, 0.1); border-radius: 8px;">
-                                        <strong style="color: var(--primary-color);">🎥 ${video.title}</strong>
-                                        <p style="font-size: 0.9rem; margin: 0.5rem 0;">${video.description}</p>
-                                        <iframe class="tip-video" 
-                                                src="https://www.youtube.com/embed/${video.id}" 
-                                                frameborder="0" 
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                                allowfullscreen>
-                                        </iframe>
-                                    </div>
-                                ` : ''}
                             </div>
                             ${photo ? `
                                 <img src="${photo.url}" 
