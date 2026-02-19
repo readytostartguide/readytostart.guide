@@ -2,10 +2,10 @@
 // Generates comprehensive first-timer guides for any location using Claude API
 
 const aiGenerator = {
-  // Claude API configuration
-  apiEndpoint: 'https://api.anthropic.com/v1/messages',
-  apiKey: '', // Will be set from environment or config
-  model: 'claude-sonnet-4-5-20250929',
+  // Gemini API configuration
+  apiEndpoint: 'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent',
+  apiKey: 'AIzaSyAvTRZv2iXLLJTL4B_Seuumr80k2elHlQw', // Will be set from environment or config
+  model: 'gemini-pro',
   
   // Smart prompt template optimized for first-timer guides
   createPrompt(location, country = 'South Korea') {
