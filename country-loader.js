@@ -231,7 +231,7 @@ const countryLoader = {
     return searchQuery; // Return original if no match found
   },
   
-  // Main function to get tips for any location
+  // Main function to get tips for any location with AI fallback
   async getTipsForLocation(searchQuery) {
     try {
       // Detect which country
@@ -245,32 +245,99 @@ const countryLoader = {
       const resolvedName = this.resolveLocationName(searchQuery, countryCode);
       console.log(`Resolved "${searchQuery}" to "${resolvedName}"`);
       
-      // Get location data
+      // Step 1: Check manual/pre-written guides first (highest quality)
       const locationData = this.getLocationData(resolvedName, countryCode);
       
       if (locationData && locationData.has_custom_content) {
+        console.log(`✓ Found pre-written guide for: ${resolvedName}`);
         return {
           found: true,
+          source: 'manual',
           country: this.availableCountries[countryCode].name,
           countryCode: countryCode,
           originalQuery: searchQuery,
           resolvedName: resolvedName,
           data: locationData
         };
-      } else {
-        // Try to find similar locations
-        const suggestions = this.findSimilarLocations(searchQuery, countryCode);
+      }
+      
+      // Step 2: Check cache for AI-generated guides
+      if (typeof cacheManager !== 'undefined') {
+        const cachedGuide = cacheManager.getFromCache(resolvedName, this.availableCountries[countryCode].name);
+        if (cachedGuide) {
+          console.log(`✓ Found cached AI guide for: ${resolvedName}`);
+          return {
+            found: true,
+            source: 'cached',
+            country: this.availableCountries[countryCode].name,
+            countryCode: countryCode,
+            originalQuery: searchQuery,
+            resolvedName: resolvedName,
+            data: cachedGuide
+          };
+        }
+      }
+      
+      // Step 3: Generate with AI if available
+      if (typeof aiGenerator !== 'undefined' && aiGenerator.isConfigured()) {
+        console.log(`🤖 Generating AI guide for: ${resolvedName}`);
+        try {
+          const aiGuide = await aiGenerator.generateGuide(resolvedName, this.availableCountries[countryCode].name);
+          
+          // Cache the generated guide
+          if (typeof cacheManager !== 'undefined') {
+            cacheManager.saveToCache(resolvedName, aiGuide, this.availableCountries[countryCode].name);
+          }
+          
+          return {
+            found: true,
+            source: 'ai-generated',
+            country: this.availableCountries[countryCode].name,
+            countryCode: countryCode,
+            originalQuery: searchQuery,
+            resolvedName: resolvedName,
+            data: aiGuide
+          };
+        } catch (error) {
+          console.error('AI generation failed:', error);
+          // Fall through to basic guide
+        }
+      }
+      
+      // Step 4: Generate basic fallback guide
+      if (typeof aiGenerator !== 'undefined') {
+        console.log(`📝 Generating basic guide for: ${resolvedName}`);
+        const basicGuide = aiGenerator.generateBasicGuide(resolvedName, this.availableCountries[countryCode].name);
+        
+        // Cache the basic guide
+        if (typeof cacheManager !== 'undefined') {
+          cacheManager.saveToCache(resolvedName, basicGuide, this.availableCountries[countryCode].name);
+        }
         
         return {
-          found: false,
+          found: true,
+          source: 'basic',
           country: this.availableCountries[countryCode].name,
           countryCode: countryCode,
           originalQuery: searchQuery,
           resolvedName: resolvedName,
-          suggestions: suggestions,
-          data: null
+          data: basicGuide
         };
       }
+      
+      // Step 5: Nothing worked - return not found with suggestions
+      const suggestions = this.findSimilarLocations(searchQuery, countryCode);
+      
+      return {
+        found: false,
+        country: this.availableCountries[countryCode].name,
+        countryCode: countryCode,
+        originalQuery: searchQuery,
+        resolvedName: resolvedName,
+        suggestions: suggestions,
+        data: null
+      };
+      
     } catch (error) {
       console.error('Error loading location data:', error);
       return {
