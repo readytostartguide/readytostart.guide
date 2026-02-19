@@ -75,11 +75,63 @@
             border: 2px solid #e0e0e0;
             border-radius: 8px;
             transition: border-color 0.3s;
+            position: relative;
         }
         
         .search-box input:focus {
             outline: none;
             border-color: #667eea;
+        }
+        
+        /* Search Suggestions Dropdown */
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #667eea;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: none;
+        }
+        
+        .search-suggestions.active {
+            display: block;
+        }
+        
+        .suggestion-item {
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s;
+        }
+        
+        .suggestion-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+        
+        .suggestion-name {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .suggestion-type {
+            font-size: 0.85rem;
+            color: #999;
+            margin-left: 0.5rem;
+        }
+        
+        .search-box {
+            position: relative;
         }
         
         .search-box button {
@@ -251,7 +303,12 @@
         
         <div class="search-container">
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Where in Korea do you want to go? e.g., Gangnam, Myeongdong, Busan...">
+                <input type="text" id="searchInput" 
+                       placeholder="Where in Korea do you want to go? e.g., Gangnam, Myeongdong, Busan..."
+                       autocomplete="off"
+                       oninput="showLiveSuggestions(this.value)"
+                       onkeydown="handleSearchKeydown(event)">
+                <div id="searchSuggestions" class="search-suggestions"></div>
                 <button onclick="handleSearch()">Search</button>
             </div>
             <div class="category-tabs">
@@ -327,6 +384,127 @@
     
     <script>
         let currentCategory = 'places';
+        
+        // All available locations for suggestions
+        const allLocations = [
+            'N Seoul Tower', 'Gangnam', 'Myeongdong', 'Hongdae', 'COEX Mall',
+            'Dongdaemun Design Plaza', 'Bukchon Hanok Village', 'Insadong',
+            'Gyeongbokgung Palace', 'Changdeokgung Palace', 'Lotte World',
+            'Itaewon', 'Han River Parks', 'Cheonggyecheon Stream',
+            'Gwangjang Market', 'Noryangjin Fish Market', 'Namdaemun Market',
+            'Olympic Park', 'Seoul Sky Observatory', 'Jogyesa Temple',
+            'DMZ Tour', 'Namdaemun Gate'
+        ];
+        
+        // Common aliases for better suggestions
+        const locationAliases = {
+            'tower': ['N Seoul Tower', 'Seoul Sky Observatory', 'Lotte World'],
+            'palace': ['Gyeongbokgung Palace', 'Changdeokgung Palace'],
+            'market': ['Gwangjang Market', 'Noryangjin Fish Market', 'Namdaemun Market'],
+            'shopping': ['Myeongdong', 'COEX Mall', 'Dongdaemun Design Plaza'],
+            'hanok': ['Bukchon Hanok Village'],
+            'dmz': ['DMZ Tour'],
+            'river': ['Han River Parks', 'Cheonggyecheon Stream']
+        };
+        
+        // Show live suggestions as user types
+        function showLiveSuggestions(query) {
+            const suggestionsDiv = document.getElementById('searchSuggestions');
+            
+            if (!query || query.length < 2) {
+                suggestionsDiv.classList.remove('active');
+                return;
+            }
+            
+            const matches = findMatches(query);
+            
+            if (matches.length === 0) {
+                suggestionsDiv.classList.remove('active');
+                return;
+            }
+            
+            const html = matches.map(match => `
+                <div class="suggestion-item" onclick="selectSuggestion('${match.name}')">
+                    <span class="suggestion-name">${match.name}</span>
+                    <span class="suggestion-type">${match.type || 'Location'}</span>
+                </div>
+            `).join('');
+            
+            suggestionsDiv.innerHTML = html;
+            suggestionsDiv.classList.add('active');
+        }
+        
+        // Find matching locations
+        function findMatches(query) {
+            const q = query.toLowerCase().trim();
+            const matches = [];
+            
+            // Direct name matches
+            allLocations.forEach(location => {
+                if (location.toLowerCase().includes(q)) {
+                    matches.push({
+                        name: location,
+                        type: getLocationType(location),
+                        score: location.toLowerCase().indexOf(q) === 0 ? 2 : 1
+                    });
+                }
+            });
+            
+            // Alias matches
+            for (const [alias, locations] of Object.entries(locationAliases)) {
+                if (alias.includes(q)) {
+                    locations.forEach(loc => {
+                        if (!matches.find(m => m.name === loc)) {
+                            matches.push({
+                                name: loc,
+                                type: getLocationType(loc),
+                                score: 0.5
+                            });
+                        }
+                    });
+                }
+            }
+            
+            // Sort by score and return top 5
+            return matches
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 5);
+        }
+        
+        // Get location type for better suggestions
+        function getLocationType(location) {
+            if (location.includes('Palace')) return 'Palace';
+            if (location.includes('Market')) return 'Market';
+            if (location.includes('Tower')) return 'Tower';
+            if (location.includes('Museum')) return 'Museum';
+            if (location.includes('Park')) return 'Park';
+            if (location === 'Gangnam' || location === 'Hongdae' || location === 'Myeongdong' || location === 'Itaewon') return 'District';
+            if (location === 'DMZ Tour') return 'Tour';
+            return 'Attraction';
+        }
+        
+        // Select a suggestion
+        function selectSuggestion(location) {
+            document.getElementById('searchInput').value = location;
+            document.getElementById('searchSuggestions').classList.remove('active');
+            handleSearch();
+        }
+        
+        // Handle keyboard navigation in suggestions
+        function handleSearchKeydown(event) {
+            const suggestionsDiv = document.getElementById('searchSuggestions');
+            
+            if (event.key === 'Escape') {
+                suggestionsDiv.classList.remove('active');
+            }
+            
+            // Hide suggestions when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.search-box')) {
+                    suggestionsDiv.classList.remove('active');
+                }
+            });
+        }
         
         function setCategory(category) {
             currentCategory = category;
