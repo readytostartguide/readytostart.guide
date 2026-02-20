@@ -297,14 +297,14 @@
     </header>
     
     <section class="hero">
-        <h1>Overcome the Fear of the First Time</h1>
-        <p>Your comprehensive guide to visiting new places with confidence</p>
-        <p style="font-size: 1rem; opacity: 0.9; margin-top: 0.5rem;">🇰🇷 Currently featuring South Korea • More countries coming soon!</p>
+        <h1>Overcome the Fear of Trying Something New</h1>
+        <p>First-timer guides for places, activities, and experiences worldwide</p>
+        <p style="font-size: 1rem; opacity: 0.9; margin-top: 0.5rem;">🌍 From visiting new places to trying new activities • We help you feel confident</p>
         
         <div class="search-container">
             <div class="search-box">
                 <input type="text" id="searchInput" 
-                       placeholder="Where in Korea do you want to go? e.g., Gangnam, Myeongdong, Busan..."
+                       placeholder="What do you want to try? e.g., First pickleball game, Tokyo Tower, Temple visit..."
                        autocomplete="off"
                        oninput="showLiveSuggestions(this.value)"
                        onkeydown="handleSearchKeydown(event)">
@@ -312,30 +312,38 @@
                 <button onclick="handleSearch()">Search</button>
             </div>
             <div class="category-tabs">
-                <button class="category-tab active" onclick="setCategory('places')">📍 Seoul & Korea</button>
-                <button class="category-tab" onclick="setCategory('sports')">🏃 Activities (Coming Soon)</button>
-                <button class="category-tab" onclick="setCategory('more')">🌏 More Countries (Coming Soon)</button>
+                <button class="category-tab active" onclick="setCategory('all')">🌟 All Experiences</button>
+                <button class="category-tab" onclick="setCategory('places')">📍 Places & Travel</button>
+                <button class="category-tab" onclick="setCategory('sports')">🏃 Sports & Activities</button>
+                <button class="category-tab" onclick="setCategory('cultural')">🏛️ Cultural Experiences</button>
+                <button class="category-tab" onclick="setCategory('social')">👥 Social Situations</button>
             </div>
         </div>
     </section>
     
     <section class="features">
         <div class="feature-card">
-            <div class="feature-icon">🗺️</div>
-            <h3>Visual Route Guides</h3>
-            <p>See exactly what your journey looks like with street-view videos, photos, and annotated maps. Know before you go.</p>
+            <div class="feature-icon">📍</div>
+            <h3>Places & Travel</h3>
+            <p>Visit new locations with confidence. Maps, photos, parking tips, and what to expect for any destination worldwide.</p>
         </div>
         
         <div class="feature-card">
-            <div class="feature-icon">📸</div>
-            <h3>Real Experience Stories</h3>
-            <p>Learn from people who've been there first. Real photos, honest tips, and what to actually expect.</p>
+            <div class="feature-icon">🏃</div>
+            <h3>Sports & Activities</h3>
+            <p>Try new activities without fear. Equipment guides, etiquette tips, and step-by-step first-timer advice.</p>
         </div>
         
         <div class="feature-card">
-            <div class="feature-icon">✅</div>
-            <h3>Beginner-Friendly Prep</h3>
-            <p>Step-by-step checklists, equipment guides, and confidence-building tips for complete beginners.</p>
+            <div class="feature-icon">🏛️</div>
+            <h3>Cultural Experiences</h3>
+            <p>Navigate cultural situations respectfully. Temple visits, meeting locals, traditional ceremonies explained.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">👥</div>
+            <h3>Social Situations</h3>
+            <p>Handle professional and social firsts. Conferences, networking events, business meetings abroad covered.</p>
         </div>
     </section>
     
@@ -346,7 +354,7 @@
             <div style="flex: 1; min-width: 250px;">
                 <h3 style="color: #667eea; font-size: 1.5rem; margin-bottom: 0.5rem;">🗼 N Seoul Tower</h3>
                 <p style="color: #666; margin-bottom: 1rem;">Complete first-timer's guide with driving directions, parking tips, and what to expect. Perfect for your first visit!</p>
-                <a href="seoul-tower.html" style="display: inline-block; padding: 0.8rem 1.5rem; background: #667eea; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: background 0.3s;">View Guide →</a>
+                <a href="search-results.html?location=N%20Seoul%20Tower" style="display: inline-block; padding: 0.8rem 1.5rem; background: #667eea; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: background 0.3s;">View Guide →</a>
             </div>
         </div>
     </section>
@@ -357,17 +365,17 @@
             <div class="step">
                 <div class="step-number">1</div>
                 <h3>Search</h3>
-                <p>Enter the place you want to visit or activity you want to try</p>
+                <p>Enter what you want to try - a place, activity, or experience</p>
             </div>
             <div class="step">
                 <div class="step-number">2</div>
-                <h3>Explore</h3>
-                <p>Watch videos, view photos, read real experiences and practical tips</p>
+                <h3>Learn</h3>
+                <p>Get detailed first-timer tips that address your specific fears and concerns</p>
             </div>
             <div class="step">
                 <div class="step-number">3</div>
                 <h3>Prepare</h3>
-                <p>Follow our checklist and feel confident about your first time</p>
+                <p>Follow our step-by-step guide with photos, maps, and reassuring advice</p>
             </div>
             <div class="step">
                 <div class="step-number">4</div>
@@ -385,26 +393,81 @@
     <script>
         let currentCategory = 'places';
         
-        // All available locations for suggestions
-        const allLocations = [
-            'N Seoul Tower', 'Gangnam', 'Myeongdong', 'Hongdae', 'COEX Mall',
-            'Dongdaemun Design Plaza', 'Bukchon Hanok Village', 'Insadong',
-            'Gyeongbokgung Palace', 'Changdeokgung Palace', 'Lotte World',
-            'Itaewon', 'Han River Parks', 'Cheonggyecheon Stream',
-            'Gwangjang Market', 'Noryangjin Fish Market', 'Namdaemun Market',
-            'Olympic Park', 'Seoul Sky Observatory', 'Jogyesa Temple',
-            'DMZ Tour', 'Namdaemun Gate'
+        // All available experiences for suggestions
+        const allExperiences = [
+            // Places - Korea (your manual guides)
+            'N Seoul Tower', 'Gangnam Seoul', 'Myeongdong Shopping', 'Hongdae Nightlife', 
+            'Bukchon Hanok Village', 'Gyeongbokgung Palace', 'Korean Temple Visit',
+            'Jeju Island', 'Busan Haeundae Beach', 'Korean Jjimjilbang (Spa)',
+            
+            // Places - International
+            'Tokyo Tower Japan', 'Mount Fuji', 'Kyoto Temple', 'Shibuya Crossing',
+            'Eiffel Tower Paris', 'Louvre Museum', 'Arc de Triomphe',
+            'Statue of Liberty New York', 'Grand Canyon', 'Times Square',
+            'Big Ben London', 'Colosseum Rome', 'Taj Mahal India',
+            'Sydney Opera House', 'Great Wall China',
+            
+            // Sports & Activities
+            'First pickleball game', 'First time at gym', 'First yoga class',
+            'First rock climbing session', 'First swimming lesson', 
+            'First martial arts class', 'First golf lesson',
+            'First cycling group ride', 'First hiking trail',
+            
+            // Cultural Experiences
+            'First Buddhist temple visit', 'First mosque visit', 
+            'First traditional tea ceremony', 'First homestay experience',
+            'Meeting Korean family for first time', 'First shrine visit Japan',
+            'First Indian wedding', 'First traditional ceremony',
+            'Visiting local home for dinner',
+            
+            // Social & Professional
+            'First conference attendance', 'First networking event',
+            'First business meeting abroad', 'First job interview in foreign country',
+            'First time speaking foreign language', 'First solo travel',
+            
+            // Uncommon Experiences
+            'First karaoke room Korea', 'First PC bang (gaming cafe)',
+            'First Korean BBQ restaurant', 'First sushi restaurant Japan',
+            'First time using chopsticks', 'First hot spring (onsen)',
+            'First street food market', 'First night market'
         ];
         
         // Common aliases for better suggestions
-        const locationAliases = {
-            'tower': ['N Seoul Tower', 'Seoul Sky Observatory', 'Lotte World'],
-            'palace': ['Gyeongbokgung Palace', 'Changdeokgung Palace'],
-            'market': ['Gwangjang Market', 'Noryangjin Fish Market', 'Namdaemun Market'],
-            'shopping': ['Myeongdong', 'COEX Mall', 'Dongdaemun Design Plaza'],
-            'hanok': ['Bukchon Hanok Village'],
-            'dmz': ['DMZ Tour'],
-            'river': ['Han River Parks', 'Cheonggyecheon Stream']
+        const experienceAliases = {
+            // Places
+            'tower': ['N Seoul Tower', 'Tokyo Tower Japan', 'Eiffel Tower Paris'],
+            'temple': ['Korean Temple Visit', 'Kyoto Temple', 'First Buddhist temple visit'],
+            'palace': ['Gyeongbokgung Palace', 'Grand Palace Bangkok'],
+            'beach': ['Busan Haeundae Beach', 'Patong Beach Phuket'],
+            'museum': ['Louvre Museum'],
+            
+            // Sports
+            'gym': ['First time at gym'],
+            'yoga': ['First yoga class'],
+            'pickleball': ['First pickleball game'],
+            'climbing': ['First rock climbing session'],
+            'swimming': ['First swimming lesson'],
+            'golf': ['First golf lesson'],
+            
+            // Cultural
+            'ceremony': ['First traditional tea ceremony', 'First traditional ceremony'],
+            'homestay': ['First homestay experience', 'Visiting local home for dinner'],
+            'family': ['Meeting Korean family for first time'],
+            'wedding': ['First Indian wedding'],
+            
+            // Social
+            'conference': ['First conference attendance'],
+            'networking': ['First networking event'],
+            'interview': ['First job interview in foreign country'],
+            'meeting': ['First business meeting abroad'],
+            
+            // Uncommon
+            'karaoke': ['First karaoke room Korea'],
+            'spa': ['Korean Jjimjilbang (Spa)', 'First hot spring (onsen)'],
+            'bbq': ['First Korean BBQ restaurant'],
+            'sushi': ['First sushi restaurant Japan'],
+            'chopsticks': ['First time using chopsticks'],
+            'market': ['First street food market', 'First night market']
         };
         
         // Show live suggestions as user types
@@ -434,30 +497,30 @@
             suggestionsDiv.classList.add('active');
         }
         
-        // Find matching locations
+        // Find matching experiences
         function findMatches(query) {
             const q = query.toLowerCase().trim();
             const matches = [];
             
             // Direct name matches
-            allLocations.forEach(location => {
-                if (location.toLowerCase().includes(q)) {
+            allExperiences.forEach(experience => {
+                if (experience.toLowerCase().includes(q)) {
                     matches.push({
-                        name: location,
-                        type: getLocationType(location),
-                        score: location.toLowerCase().indexOf(q) === 0 ? 2 : 1
+                        name: experience,
+                        type: getExperienceType(experience),
+                        score: experience.toLowerCase().indexOf(q) === 0 ? 2 : 1
                     });
                 }
             });
             
             // Alias matches
-            for (const [alias, locations] of Object.entries(locationAliases)) {
+            for (const [alias, experiences] of Object.entries(experienceAliases)) {
                 if (alias.includes(q)) {
-                    locations.forEach(loc => {
-                        if (!matches.find(m => m.name === loc)) {
+                    experiences.forEach(exp => {
+                        if (!matches.find(m => m.name === exp)) {
                             matches.push({
-                                name: loc,
-                                type: getLocationType(loc),
+                                name: exp,
+                                type: getExperienceType(exp),
                                 score: 0.5
                             });
                         }
@@ -471,16 +534,20 @@
                 .slice(0, 5);
         }
         
-        // Get location type for better suggestions
-        function getLocationType(location) {
-            if (location.includes('Palace')) return 'Palace';
-            if (location.includes('Market')) return 'Market';
-            if (location.includes('Tower')) return 'Tower';
-            if (location.includes('Museum')) return 'Museum';
-            if (location.includes('Park')) return 'Park';
-            if (location === 'Gangnam' || location === 'Hongdae' || location === 'Myeongdong' || location === 'Itaewon') return 'District';
-            if (location === 'DMZ Tour') return 'Tour';
-            return 'Attraction';
+        // Get experience type for better suggestions
+        function getExperienceType(experience) {
+            const exp = experience.toLowerCase();
+            if (exp.includes('first') && (exp.includes('gym') || exp.includes('yoga') || exp.includes('pickleball') || 
+                exp.includes('climbing') || exp.includes('swimming') || exp.includes('golf'))) return 'Sports & Activity';
+            if (exp.includes('temple') || exp.includes('mosque') || exp.includes('ceremony') || 
+                exp.includes('homestay') || exp.includes('family') || exp.includes('wedding')) return 'Cultural Experience';
+            if (exp.includes('conference') || exp.includes('networking') || exp.includes('interview') || 
+                exp.includes('meeting') || exp.includes('speaking')) return 'Professional & Social';
+            if (exp.includes('karaoke') || exp.includes('jjimjilbang') || exp.includes('spa') || 
+                exp.includes('bbq') || exp.includes('chopsticks') || exp.includes('pc bang')) return 'Unique Experience';
+            if (exp.includes('tower') || exp.includes('palace') || exp.includes('museum') || 
+                exp.includes('beach')) return 'Tourist Attraction';
+            return 'Travel Destination';
         }
         
         // Select a suggestion
@@ -518,14 +585,20 @@
             // Update placeholder text
             const input = document.getElementById('searchInput');
             switch(category) {
+                case 'all':
+                    input.placeholder = "e.g., First gym visit, Tokyo Tower, Temple etiquette, Conference networking...";
+                    break;
                 case 'places':
-                    input.placeholder = "e.g., Gangnam, Bukchon Hanok Village, Jeju Island...";
+                    input.placeholder = "e.g., Tokyo Tower, Eiffel Tower, Seoul Temple, Busan Beach...";
                     break;
                 case 'sports':
-                    input.placeholder = "Coming soon: Pickleball courts, Swimming pools, etc.";
+                    input.placeholder = "e.g., First pickleball game, First gym visit, First yoga class...";
                     break;
-                case 'more':
-                    input.placeholder = "Coming soon: Japan, Thailand, USA...";
+                case 'cultural':
+                    input.placeholder = "e.g., First temple visit, First mosque, Meeting Korean family, Traditional ceremony...";
+                    break;
+                case 'social':
+                    input.placeholder = "e.g., First conference, Networking event, Job interview abroad...";
                     break;
             }
         }

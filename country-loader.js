@@ -91,6 +91,14 @@ const countryLoader = {
         'panmunjom': 'DMZ Tour',
         'jsa': 'DMZ Tour'
       }
+    },
+    
+    // Global fallback for any location worldwide
+    'global': {
+      name: 'Worldwide',
+      script: null, // No static file needed, AI generates everything
+      keywords: [], // Matches anything
+      cities: []
     }
     // Future countries will be added here:
     // 'japan': {
@@ -128,8 +136,8 @@ const countryLoader = {
       }
     }
     
-    // Default to Korea for now (since it's the only one available)
-    return 'korea';
+    // Default to 'global' for worldwide locations (AI will detect country automatically)
+    return 'global';
   },
   
   // Load the appropriate country data file

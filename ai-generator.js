@@ -1,11 +1,59 @@
-// AI Location Guide Generator
-// Generates comprehensive first-timer guides for any location using Claude API
+// AI Location Guide Generator - Google Gemini Version
+// Generates comprehensive first-timer guides for any location using FREE Google Gemini API
 
 const aiGenerator = {
-  // Gemini API configuration
-  apiEndpoint: 'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent',
-  apiKey: 'AIzaSyAvTRZv2iXLLJTL4B_Seuumr80k2elHlQw', // Will be set from environment or config
-  model: 'gemini-pro',
+  // Google Gemini API configuration
+  apiEndpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent',
+  apiKey: '', // Add your Gemini API key here
+  
+  // Auto-detect country from location name
+  detectCountryFromLocation(location) {
+    const loc = location.toLowerCase();
+    
+    // Asia
+    if (loc.includes('tokyo') || loc.includes('osaka') || loc.includes('kyoto') || loc.includes('japan')) return 'Japan';
+    if (loc.includes('seoul') || loc.includes('busan') || loc.includes('jeju') || loc.includes('korea')) return 'South Korea';
+    if (loc.includes('bangkok') || loc.includes('phuket') || loc.includes('chiang mai') || loc.includes('thailand')) return 'Thailand';
+    if (loc.includes('beijing') || loc.includes('shanghai') || loc.includes('hong kong') || loc.includes('china')) return 'China';
+    if (loc.includes('singapore')) return 'Singapore';
+    if (loc.includes('hanoi') || loc.includes('ho chi minh') || loc.includes('vietnam')) return 'Vietnam';
+    if (loc.includes('bali') || loc.includes('jakarta') || loc.includes('indonesia')) return 'Indonesia';
+    if (loc.includes('manila') || loc.includes('philippines')) return 'Philippines';
+    if (loc.includes('kuala lumpur') || loc.includes('malaysia')) return 'Malaysia';
+    if (loc.includes('taiwan') || loc.includes('taipei')) return 'Taiwan';
+    if (loc.includes('mumbai') || loc.includes('delhi') || loc.includes('india')) return 'India';
+    
+    // Europe
+    if (loc.includes('paris') || loc.includes('france')) return 'France';
+    if (loc.includes('london') || loc.includes('england') || loc.includes('uk')) return 'United Kingdom';
+    if (loc.includes('rome') || loc.includes('venice') || loc.includes('italy')) return 'Italy';
+    if (loc.includes('barcelona') || loc.includes('madrid') || loc.includes('spain')) return 'Spain';
+    if (loc.includes('berlin') || loc.includes('munich') || loc.includes('germany')) return 'Germany';
+    if (loc.includes('amsterdam') || loc.includes('netherlands')) return 'Netherlands';
+    if (loc.includes('switzerland') || loc.includes('zurich')) return 'Switzerland';
+    if (loc.includes('greece') || loc.includes('athens')) return 'Greece';
+    
+    // Americas
+    if (loc.includes('new york') || loc.includes('los angeles') || loc.includes('san francisco') || 
+        loc.includes('miami') || loc.includes('chicago') || loc.includes('usa') || loc.includes('united states')) return 'United States';
+    if (loc.includes('toronto') || loc.includes('vancouver') || loc.includes('montreal') || loc.includes('canada')) return 'Canada';
+    if (loc.includes('mexico city') || loc.includes('cancun') || loc.includes('mexico')) return 'Mexico';
+    if (loc.includes('rio') || loc.includes('sao paulo') || loc.includes('brazil')) return 'Brazil';
+    if (loc.includes('buenos aires') || loc.includes('argentina')) return 'Argentina';
+    
+    // Oceania
+    if (loc.includes('sydney') || loc.includes('melbourne') || loc.includes('australia')) return 'Australia';
+    if (loc.includes('auckland') || loc.includes('new zealand')) return 'New Zealand';
+    
+    // Middle East & Africa
+    if (loc.includes('dubai') || loc.includes('abu dhabi') || loc.includes('uae')) return 'United Arab Emirates';
+    if (loc.includes('istanbul') || loc.includes('turkey')) return 'Turkey';
+    if (loc.includes('cairo') || loc.includes('egypt')) return 'Egypt';
+    if (loc.includes('cape town') || loc.includes('south africa')) return 'South Africa';
+    
+    // Default - let AI figure it out from context
+    return 'Unknown (will be detected from context)';
+  },
   
   // Smart prompt template optimized for first-timer guides
   createPrompt(location, country = 'South Korea') {
@@ -24,7 +72,7 @@ Common first-timer fears to address:
 - Fear of safety/security
 - Fear of wasting time or money
 
-Provide the following in JSON format:
+Provide the following in valid JSON format (respond ONLY with JSON, no other text):
 
 {
   "location_name": "${location}",
@@ -33,30 +81,31 @@ Provide the following in JSON format:
   "quick_info": {
     "best_time": "When to visit to avoid crowds/issues",
     "driving_time": "Approximate time from city center or how to get there",
-    "parking_fee": "Parking costs or 'N/A'",
-    "entry_fee": "Entry fee or 'Free'"
+    "parking_fee": "Parking costs or N/A",
+    "entry_fee": "Entry fee or Free"
   },
   "first_timer_tips": [
     {
-      "title": "Fear-focused title (e.g., 'Don't panic about parking!')",
+      "title": "Fear-focused title like: Don't panic about parking!",
       "content": "Detailed, reassuring explanation with specific facts"
+    },
+    {
+      "title": "Another fear-focused tip",
+      "content": "More reassuring details"
     }
-    // Provide 5-6 tips that address real fears
   ],
   "timeline": [
     {
-      "title": "Step name (e.g., 'Arrival & Parking (10 min)')",
+      "title": "Step name like: Arrival and Parking (10 min)",
       "content": "Detailed explanation of what to expect"
     }
-    // Provide 4-6 steps covering the full visit
   ],
   "practical_details": {
     "address": "Full address if known, or approximate location",
-    "coordinates": {"lat": 0.0, "lng": 0.0},
     "best_season": "When to visit",
     "typical_duration": "How long to spend here",
-    "difficulty_level": "Easy/Moderate/Challenging",
-    "family_friendly": true/false,
+    "difficulty_level": "Easy, Moderate, or Challenging",
+    "family_friendly": true,
     "accessibility_notes": "Any accessibility considerations"
   }
 }
@@ -68,53 +117,87 @@ IMPORTANT GUIDELINES:
 4. Avoid generic advice - "It's beautiful" is useless. "Arrive before 10 AM to avoid tour groups" is helpful.
 5. Address the emotional journey - acknowledge fears then provide solutions
 
-Return ONLY the JSON, no other text.`;
+Return ONLY valid JSON, nothing else.`;
   },
   
-  // Call Claude API to generate guide
-  async generateGuide(location, country = 'South Korea') {
+  // Call Google Gemini API to generate guide
+  async generateGuide(location, country = null) {
     try {
-      console.log(`🤖 Generating AI guide for: ${location}, ${country}`);
+      // Auto-detect country from location if not provided
+      if (!country || country === 'Worldwide') {
+        country = this.detectCountryFromLocation(location);
+      }
       
-      const response = await fetch(this.apiEndpoint, {
+      console.log(`🤖 Generating Gemini AI guide for: ${location}, ${country}`);
+      
+      if (!this.apiKey) {
+        console.log('⚠️ No Gemini API key configured, using fallback');
+        return this.generateBasicGuide(location, country);
+      }
+      
+      const url = `${this.apiEndpoint}?key=${this.apiKey}`;
+      
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': this.apiKey,
-          'anthropic-version': '2023-06-01'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: this.model,
-          max_tokens: 4096,
-          messages: [{
-            role: 'user',
-            content: this.createPrompt(location, country)
-          }]
+          contents: [{
+            parts: [{
+              text: this.createPrompt(location, country)
+            }]
+          }],
+          generationConfig: {
+            temperature: 0.7,
+            topK: 40,
+            topP: 0.95,
+            maxOutputTokens: 4096,
+          }
         })
       });
       
       if (!response.ok) {
-        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+        const errorText = await response.text();
+        console.error(`❌ Gemini API Error: ${response.status}`, errorText);
+        throw new Error(`Gemini API Error: ${response.status}`);
       }
       
       const data = await response.json();
-      const content = data.content[0].text;
       
-      // Parse JSON from Claude's response
-      const guideData = JSON.parse(content);
+      // Extract text from Gemini response
+      if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+        console.error('❌ Invalid Gemini response structure:', data);
+        throw new Error('Invalid Gemini response');
+      }
+      
+      const content = data.candidates[0].content.parts[0].text;
+      console.log('Raw Gemini response:', content);
+      
+      // Parse JSON from Gemini's response
+      // Remove markdown code blocks if present
+      let jsonText = content.trim();
+      if (jsonText.startsWith('```json')) {
+        jsonText = jsonText.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+      } else if (jsonText.startsWith('```')) {
+        jsonText = jsonText.replace(/^```\s*/, '').replace(/\s*```$/, '');
+      }
+      
+      const guideData = JSON.parse(jsonText);
       
       // Add metadata
       guideData.generated_at = new Date().toISOString();
-      guideData.generated_by = 'ai';
+      guideData.generated_by = 'ai-gemini';
       guideData.has_custom_content = true;
       guideData.location_id = this.generateLocationId(location);
       
-      console.log(`✓ Generated guide for ${location}`);
+      console.log(`✓ Generated Gemini guide for ${location}`);
       return guideData;
       
     } catch (error) {
-      console.error('❌ Failed to generate guide:', error);
-      throw error;
+      console.error('❌ Failed to generate Gemini guide:', error);
+      console.log('📝 Falling back to basic guide');
+      return this.generateBasicGuide(location, country);
     }
   },
   
@@ -126,7 +209,7 @@ Return ONLY the JSON, no other text.`;
       .replace(/^-|-$/g, '');
   },
   
-  // Fallback generator when API is not available
+  // Fallback generator when API is not available or fails
   generateBasicGuide(location, country = 'South Korea') {
     console.log(`📝 Generating basic guide for: ${location}`);
     
@@ -148,42 +231,38 @@ Return ONLY the JSON, no other text.`;
       first_timer_tips: [
         {
           title: "Plan ahead for parking",
-          content: "Arrive early to secure parking, especially on weekends. Look for attendants who can help guide you."
+          content: "Arrive early to secure parking, especially on weekends. Look for attendants who can help guide you to available spots."
         },
         {
-          title: "Check the weather",
-          content: "Bring appropriate clothing for the weather. Layers are always a good idea in case temperatures change."
+          title: "Check the weather before you go",
+          content: "Bring appropriate clothing for the weather. Layers are always a good idea in case temperatures change throughout the day."
         },
         {
-          title: "Bring cash and card",
-          content: "Some vendors prefer cash, while major facilities accept cards. Have both options available."
+          title: "Bring both cash and card",
+          content: "Some vendors prefer cash, while major facilities accept cards. Having both options ensures you're prepared for any situation."
         },
         {
           title: "Visit on weekdays if possible",
-          content: "Weekday visits typically have fewer crowds, making it easier to explore at your own pace."
+          content: "Weekday visits typically have fewer crowds, making it easier to explore at your own pace and find parking more easily."
         },
         {
           title: "Use translation apps if needed",
-          content: "Download a translation app like Google Translate or Papago before your visit for easier communication."
+          content: "Download a translation app like Google Translate or Papago before your visit for easier communication with locals."
         }
       ],
       
       timeline: [
         {
-          title: "Arrival & Parking (15-20 min)",
-          content: "Look for clearly marked parking areas or follow signs. Parking attendants are usually available to help. Pay attention to payment methods - some lots use automated machines."
+          title: "Arrival & Orientation (15-20 min)",
+          content: "Look for clearly marked parking areas or follow signs. Parking attendants are usually available to help. Take a moment to get your bearings and locate information centers or maps."
         },
         {
-          title: "Getting Oriented (5-10 min)",
-          content: "Take a moment to look around and identify key landmarks or information centers. Maps are usually available at main entrances."
+          title: "Main Exploration (1-2 hours)",
+          content: "Take your time to explore the area. Don't feel rushed - move at your own pace and enjoy the experience. Most locations have rest areas if you need a break."
         },
         {
-          title: "Exploring (1-2 hours)",
-          content: "Take your time to explore. Don't feel rushed - move at your own pace and enjoy the experience."
-        },
-        {
-          title: "Departure (10 min)",
-          content: "Remember where you parked. Allow extra time for finding your vehicle and paying for parking if needed."
+          title: "Departure (10-15 min)",
+          content: "Remember where you parked. Allow extra time for finding your vehicle and paying for parking if needed. Check you haven't left anything behind."
         }
       ],
       
@@ -193,10 +272,8 @@ Return ONLY the JSON, no other text.`;
         typical_duration: "1-3 hours",
         difficulty_level: "Easy to Moderate",
         family_friendly: true,
-        accessibility_notes: "Check with location for specific accessibility information"
-      },
-      
-      note: "This is an auto-generated basic guide. For more detailed information, search online or ask locals for recommendations."
+        accessibility_notes: "Contact location directly for specific accessibility information"
+      }
     };
   },
   
@@ -208,7 +285,7 @@ Return ONLY the JSON, no other text.`;
   // Configure API key
   configure(apiKey) {
     this.apiKey = apiKey;
-    console.log('✓ AI Generator configured');
+    console.log('✓ Gemini AI Generator configured');
   }
 };
 
