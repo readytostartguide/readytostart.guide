@@ -149,6 +149,12 @@ const countryLoader = {
       return null;
     }
     
+    // Global has no script file - it's AI-only
+    if (!countryInfo.script || countryCode === 'global') {
+      console.log(`✓ ${countryInfo.name} mode - AI generation only`);
+      return Promise.resolve(countryInfo);
+    }
+    
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
       script.src = countryInfo.script;
