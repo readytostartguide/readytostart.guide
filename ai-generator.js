@@ -4,7 +4,7 @@
 const aiGenerator = {
   // Google Gemini API configuration
   apiEndpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent',
-  apiKey: '', // Add your Gemini API key here
+  apiKey: 'AIzaSyAvTRZv2iXLLJTL4B_Seuumr80k2elHlQw', // Add your Gemini API key here
   
   // Auto-detect country from location name
   detectCountryFromLocation(location) {
