@@ -115,6 +115,35 @@ const countryLoader = {
     // }
   },
   
+  // Detect if search is for an activity/experience vs a physical location
+  isActivity(searchQuery) {
+    const q = searchQuery.toLowerCase();
+    
+    // Activity keywords
+    const activityKeywords = [
+      'first', 'how to', 'learn', 'try', 'begin',
+      'pickleball', 'yoga', 'gym', 'climb', 'swimming', 'golf', 'martial arts',
+      'conference', 'networking', 'interview', 'meeting',
+      'temple visit', 'mosque visit', 'ceremony', 'homestay', 'family',
+      'karaoke', 'spa', 'jjimjilbang', 'bbq', 'sushi', 'chopsticks',
+      'game', 'class', 'lesson', 'session', 'etiquette'
+    ];
+    
+    // Check if query contains activity keywords
+    for (const keyword of activityKeywords) {
+      if (q.includes(keyword)) {
+        // But exclude if it's clearly a place name
+        if (q.includes('tower') || q.includes('palace') || q.includes('museum') || 
+            q.includes('market') || q.includes('beach') || q.includes('park')) {
+          return false; // It's a place, not an activity
+        }
+        return true; // It's an activity
+      }
+    }
+    
+    return false; // Default to place
+  },
+  
   // Detect which country the search query is about
   detectCountry(searchQuery) {
     const normalizedQuery = searchQuery.toLowerCase().trim();
@@ -248,6 +277,10 @@ const countryLoader = {
   // Main function to get tips for any location with AI fallback
   async getTipsForLocation(searchQuery) {
     try {
+      // Detect if this is an activity or a place
+      const isActivity = this.isActivity(searchQuery);
+      console.log(`Type: ${isActivity ? 'Activity' : 'Place'} - "${searchQuery}"`);
+      
       // Detect which country
       const countryCode = this.detectCountry(searchQuery);
       console.log(`Detected country: ${countryCode} for query: "${searchQuery}"`);
@@ -267,6 +300,7 @@ const countryLoader = {
         return {
           found: true,
           source: 'manual',
+          isActivity: isActivity,
           country: this.availableCountries[countryCode].name,
           countryCode: countryCode,
           originalQuery: searchQuery,
@@ -283,6 +317,7 @@ const countryLoader = {
           return {
             found: true,
             source: 'cached',
+            isActivity: isActivity,
             country: this.availableCountries[countryCode].name,
             countryCode: countryCode,
             originalQuery: searchQuery,
@@ -296,7 +331,7 @@ const countryLoader = {
       if (typeof aiGenerator !== 'undefined' && aiGenerator.isConfigured()) {
         console.log(`🤖 Generating AI guide for: ${resolvedName}`);
         try {
-          const aiGuide = await aiGenerator.generateGuide(resolvedName, this.availableCountries[countryCode].name);
+          const aiGuide = await aiGenerator.generateGuide(resolvedName, this.availableCountries[countryCode].name, isActivity);
           
           // Cache the generated guide
           if (typeof cacheManager !== 'undefined') {
@@ -306,6 +341,7 @@ const countryLoader = {
           return {
             found: true,
             source: 'ai-generated',
+            isActivity: isActivity,
             country: this.availableCountries[countryCode].name,
             countryCode: countryCode,
             originalQuery: searchQuery,
@@ -321,7 +357,7 @@ const countryLoader = {
       // Step 4: Generate basic fallback guide
       if (typeof aiGenerator !== 'undefined') {
         console.log(`📝 Generating basic guide for: ${resolvedName}`);
-        const basicGuide = aiGenerator.generateBasicGuide(resolvedName, this.availableCountries[countryCode].name);
+        const basicGuide = aiGenerator.generateBasicGuide(resolvedName, this.availableCountries[countryCode].name, isActivity);
         
         // Cache the basic guide
         if (typeof cacheManager !== 'undefined') {
@@ -331,6 +367,7 @@ const countryLoader = {
         return {
           found: true,
           source: 'basic',
+          isActivity: isActivity,
           country: this.availableCountries[countryCode].name,
           countryCode: countryCode,
           originalQuery: searchQuery,
@@ -344,6 +381,7 @@ const countryLoader = {
       
       return {
         found: false,
+        isActivity: isActivity,
         country: this.availableCountries[countryCode].name,
         countryCode: countryCode,
         originalQuery: searchQuery,

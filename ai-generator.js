@@ -56,10 +56,55 @@ const aiGenerator = {
   },
   
   // Smart prompt template optimized for first-timer guides
-  createPrompt(location, country = 'South Korea') {
-    return `You are an expert travel guide specializing in helping nervous first-time visitors overcome their fears and feel confident.
+  createPrompt(searchQuery, country = 'Unknown', isActivity = false) {
+    if (isActivity) {
+      // Activity-focused prompt
+      return `You are an expert guide specializing in helping complete beginners try new activities with confidence.
 
-Create a comprehensive first-timer guide for: ${location}, ${country}
+Create a comprehensive first-timer guide for: ${searchQuery}
+
+CRITICAL FOCUS: Address fears about looking foolish, not knowing rules, lacking equipment, being judged, or doing something wrong.
+
+Provide the following in valid JSON format (respond ONLY with JSON, no other text):
+
+{
+  "activity_name": "${searchQuery}",
+  "display_name": "Full activity name",
+  "is_activity": true,
+  "quick_info": {
+    "typical_duration": "How long a first session takes",
+    "difficulty_level": "Beginner friendly / Easy / Moderate",
+    "equipment_needed": "What you need",
+    "typical_cost": "Cost or N/A"
+  },
+  "first_timer_tips": [
+    {
+      "title": "Reassuring title like: Everyone was a beginner once!",
+      "content": "Detailed, specific advice"
+    }
+  ],
+  "timeline": [
+    {
+      "title": "Step like: Arrival and Warmup (10 min)",
+      "content": "What happens in this phase"
+    }
+  ],
+  "practical_details": {
+    "what_to_wear": "Clothing recommendations",
+    "what_to_bring": "Items to bring",
+    "common_mistakes": "What beginners often get wrong",
+    "etiquette_rules": "Important etiquette"
+  }
+}
+
+IMPORTANT: This is an ACTIVITY guide. Focus on HOW to do it, rules, etiquette, equipment. NO address or driving directions.
+
+Return ONLY valid JSON, nothing else.`;
+    } else {
+      // Location-focused prompt
+      return `You are an expert travel guide specializing in helping nervous first-time visitors overcome their fears and feel confident.
+
+Create a comprehensive first-timer guide for: ${searchQuery}, ${country}
 
 CRITICAL FOCUS: Address specific fears and anxieties that first-timers have. Every tip should reassure and build confidence.
 
@@ -75,9 +120,10 @@ Common first-timer fears to address:
 Provide the following in valid JSON format (respond ONLY with JSON, no other text):
 
 {
-  "location_name": "${location}",
+  "location_name": "${searchQuery}",
   "display_name": "Full location name",
   "country": "${country}",
+  "is_activity": false,
   "quick_info": {
     "best_time": "When to visit to avoid crowds/issues",
     "driving_time": "Approximate time from city center or how to get there",
@@ -118,21 +164,22 @@ IMPORTANT GUIDELINES:
 5. Address the emotional journey - acknowledge fears then provide solutions
 
 Return ONLY valid JSON, nothing else.`;
+    }
   },
   
   // Call Google Gemini API to generate guide
-  async generateGuide(location, country = null) {
+  async generateGuide(searchQuery, country = null, isActivity = false) {
     try {
       // Auto-detect country from location if not provided
       if (!country || country === 'Worldwide') {
-        country = this.detectCountryFromLocation(location);
+        country = this.detectCountryFromLocation(searchQuery);
       }
       
-      console.log(`🤖 Generating Gemini AI guide for: ${location}, ${country}`);
+      console.log(`🤖 Generating Gemini AI guide for: ${searchQuery} (${isActivity ? 'Activity' : 'Place'}), ${country}`);
       
       if (!this.apiKey) {
         console.log('⚠️ No Gemini API key configured, using fallback');
-        return this.generateBasicGuide(location, country);
+        return this.generateBasicGuide(searchQuery, country, isActivity);
       }
       
       const url = `${this.apiEndpoint}?key=${this.apiKey}`;
@@ -145,7 +192,7 @@ Return ONLY valid JSON, nothing else.`;
         body: JSON.stringify({
           contents: [{
             parts: [{
-              text: this.createPrompt(location, country)
+              text: this.createPrompt(searchQuery, country, isActivity)
             }]
           }],
           generationConfig: {
@@ -193,15 +240,16 @@ Return ONLY valid JSON, nothing else.`;
       guideData.generated_at = new Date().toISOString();
       guideData.generated_by = 'ai-gemini';
       guideData.has_custom_content = true;
-      guideData.location_id = this.generateLocationId(location);
+      guideData.location_id = this.generateLocationId(searchQuery);
+      guideData.is_activity = isActivity;
       
-      console.log(`✓ Generated Gemini guide for ${location}`);
+      console.log(`✓ Generated Gemini guide for ${searchQuery}`);
       return guideData;
       
     } catch (error) {
       console.error('❌ Failed to generate Gemini guide:', error);
       console.log('📝 Falling back to basic guide');
-      return this.generateBasicGuide(location, country);
+      return this.generateBasicGuide(searchQuery, country, isActivity);
     }
   },
   
