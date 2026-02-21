@@ -681,7 +681,7 @@
     
     <script>
         // IMPORTANT: Replace with your actual Google Maps API key
-        const API_KEY = 'AIzaSyB_GKAoEnP9zyZxolYiD8eb4zUxx4bH72Y';
+        const API_KEY = 'YOUR_API_KEY_HERE';
         
         let map, panorama, place, customTipsData;
         let helpfulData = { yes: 0, no: 0, voted: false };
@@ -1021,6 +1021,12 @@
                 
                 // Show source badge
                 showSourceBadge(result.source);
+                
+                // Hide sidebar if it's an activity (no location/map needed)
+                if (result.isActivity) {
+                    document.querySelector('.sidebar').style.display = 'none';
+                    document.querySelector('.main-container').style.gridTemplateColumns = '1fr';
+                }
                 
                 // Show "did you mean?" if we corrected the spelling
                 if (result.resolvedName && result.resolvedName !== searchLocation) {
