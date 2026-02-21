@@ -1035,7 +1035,7 @@
                 
                 // Load custom content
                 customTipsData = result.data;
-                loadCustomContent(result.resolvedName || searchLocation);
+                loadCustomContent(result.resolvedName || searchLocation, result.isActivity || false);
             } else {
                 // Show suggestions if available
                 if (result.suggestions && result.suggestions.length > 0) {
@@ -1124,12 +1124,22 @@
         }
         
         // Load hero photo for location
-        function loadHeroPhoto(searchLocation) {
+        async function loadHeroPhoto(searchLocation, isActivity = false) {
             const heroSection = document.getElementById('heroPhotoSection');
             const heroPhoto = document.getElementById('heroPhoto');
             const heroCaption = document.getElementById('heroPhotoCaption');
             
-            // Map locations to hero photos
+            // For activities, use generic activity photo
+            if (isActivity) {
+                const activityPhoto = getActivityPhoto(searchLocation);
+                heroPhoto.src = activityPhoto.url;
+                heroPhoto.alt = searchLocation;
+                heroCaption.textContent = activityPhoto.caption;
+                heroSection.style.display = 'block';
+                return;
+            }
+            
+            // Map of known locations to specific photos
             const heroPhotos = {
                 'N Seoul Tower': {
                     url: 'https://images.unsplash.com/photo-1583474398619-b79d2635e0a6?w=1200&h=400&fit=crop',
@@ -1154,18 +1164,10 @@
                 'Gyeongbokgung Palace': {
                     url: 'https://images.unsplash.com/photo-1532960401447-59f4706e1243?w=1200&h=400&fit=crop',
                     caption: 'Gyeongbokgung Palace - Korea\'s grandest royal palace'
-                },
-                'Jeju Island': {
-                    url: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1200&h=400&fit=crop',
-                    caption: 'Jeju Island - Korea\'s tropical paradise'
-                },
-                'Busan': {
-                    url: 'https://images.unsplash.com/photo-1533669955142-6a73332af4db?w=1200&h=400&fit=crop',
-                    caption: 'Busan - beautiful beaches and vibrant culture'
                 }
             };
             
-            // Find matching photo
+            // Check if we have a pre-defined photo
             let photoData = null;
             for (const [key, value] of Object.entries(heroPhotos)) {
                 if (searchLocation.toLowerCase().includes(key.toLowerCase()) || 
@@ -1175,12 +1177,17 @@
                 }
             }
             
-            // Use default photo if no match
+            // If no pre-defined photo, fetch from Unsplash
             if (!photoData) {
-                photoData = {
-                    url: 'https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=1200&h=400&fit=crop',
-                    caption: `${searchLocation} - your first-timer adventure awaits!`
-                };
+                try {
+                    photoData = await fetchUnsplashPhoto(searchLocation);
+                } catch (error) {
+                    console.log('Failed to fetch Unsplash photo, using fallback');
+                    photoData = {
+                        url: `https://source.unsplash.com/1200x400/?${encodeURIComponent(searchLocation)},travel,landmark`,
+                        caption: `${searchLocation} - your first-timer adventure awaits!`
+                    };
+                }
             }
             
             // Set photo and show section
@@ -1195,13 +1202,45 @@
             };
         }
         
-        // Load custom content (from korea.js)
-        function loadCustomContent(searchLocation) {
+        // Fetch photo from Unsplash for dynamic locations
+        async function fetchUnsplashPhoto(locationName) {
+            // Using Unsplash Source API (no API key needed!)
+            // This automatically fetches a relevant photo
+            const query = encodeURIComponent(locationName + ' travel landmark');
+            return {
+                url: `https://source.unsplash.com/1200x400/?${query}`,
+                caption: `${locationName} - your first-timer guide with confidence!`
+            };
+        }
+        
+        // Get activity-themed photo
+        function getActivityPhoto(activityName) {
+            const activity = activityName.toLowerCase();
+            
+            // Map activities to photo themes
+            let theme = 'fitness,exercise';
+            if (activity.includes('pickleball') || activity.includes('tennis')) theme = 'racket,sport';
+            else if (activity.includes('yoga')) theme = 'yoga,meditation';
+            else if (activity.includes('gym')) theme = 'gym,fitness';
+            else if (activity.includes('climb')) theme = 'climbing,mountain';
+            else if (activity.includes('swim')) theme = 'swimming,pool';
+            else if (activity.includes('conference')) theme = 'conference,business';
+            else if (activity.includes('temple') || activity.includes('mosque')) theme = 'temple,spiritual';
+            else if (activity.includes('ceremony')) theme = 'ceremony,tradition';
+            
+            return {
+                url: `https://source.unsplash.com/1200x400/?${theme}`,
+                caption: `${activityName} - we'll help you feel confident!`
+            };
+        }
+        
+        // Load custom content (from korea.js or AI-generated)
+        function loadCustomContent(searchLocation, isActivity = false) {
             // Show custom badge
             document.getElementById('customBadge').style.display = 'inline-block';
             
-            // Load hero photo
-            loadHeroPhoto(searchLocation);
+            // Load hero photo (with activity awareness)
+            loadHeroPhoto(searchLocation, isActivity);
             
             // Set title
             document.getElementById('locationName').textContent = customTipsData.display_name;
@@ -1323,11 +1362,15 @@
                 document.getElementById('timelineSection').style.display = 'block';
             }
             
-            // Load Google Maps for this location
-            if (customTipsData.coordinates) {
+            // Load Google Maps for this location (skip for activities)
+            if (customTipsData.coordinates && !isActivity) {
                 loadGoogleMapsAPI(searchLocation, customTipsData.coordinates);
-            } else {
+            } else if (!isActivity) {
                 loadGoogleMapsAPI(searchLocation);
+            } else {
+                // For activities, hide loading and show content immediately
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
             }
         }
         
