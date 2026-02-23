@@ -248,11 +248,6 @@ const countryLoader = {
         return null;
     }
   },
-      //   return typeof getThailandLocation === 'function' ? getThailandLocation(searchQuery) : null;
-      default:
-        return null;
-    }
-  },
   
   // Helper: Calculate string similarity (Levenshtein distance simplified)
   calculateSimilarity(str1, str2) {
