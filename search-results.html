@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Guide | ReadyToStart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.7;
+            color: #2c3e50;
+            background: #f8f9fa;
+        }
+        
+        /* Calm color palette */
+        :root {
+            --primary-color: #5dade2;
+            --primary-dark: #3498db;
+            --secondary-color: #76c7c0;
+            --warm-bg: #fef5e7;
+            --calm-bg: #ebf5fb;
+            --text-dark: #2c3e50;
+            --text-light: #5d6d7e;
+            --border-light: #d5dbdb;
+            --success-green: #52be80;
+        }
+        
+        /* Header */
+        header {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .back-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: var(--primary-dark);
+        }
+        
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--primary-color);
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2.5rem 2rem;
+        }
+        
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .hero .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            margin-bottom: 1rem;
+        }
+        
+        .custom-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        
+        /* Helpful Buttons */
+        .helpful-section {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .helpful-section span {
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+        
+        .helpful-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--border-light);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .helpful-btn:hover {
+            border-color: var(--primary-color);
+            background: var(--calm-bg);
+        }
+        
+        .helpful-btn.active {
+            border-color: var(--success-green);
+            background: #e8f8f5;
+        }
+        
+        .helpful-count {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        /* Main Layout */
+        .main-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+        
+        /* Main Content Area */
+        .content-area {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .sidebar-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        
+        .sidebar-card h3 {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        /* Map & Street View */
+        #map {
+            width: 100%;
+            height: 250px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        #streetview {
+            width: 100%;
+            height: 200px;
+            border-radius: 8px;
+        }
+        
+        /* Quick Info */
+        .quick-info-item {
+            display: flex;
+            align-items: start;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: var(--calm-bg);
+            border-radius: 8px;
+        }
+        
+        .quick-info-item .icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .quick-info-item .info {
+            flex: 1;
+        }
+        
+        .quick-info-item .label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 0.2rem;
+        }
+        
+        .quick-info-item .value {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+        
+        /* Content Sections */
+        .content-section {
+            padding: 2rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .content-section:last-child {
+            border-bottom: none;
+        }
+        
+        .content-section h2 {
+            color: var(--primary-color);
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        
+        /* Tips with Photos */
+        .tip-item {
+            margin-bottom: 2rem;
+            background: var(--warm-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .tip-content {
+            padding: 1.5rem;
+        }
+        
+        .tip-item h3 {
+            color: var(--text-dark);
+            font-size: 1.15rem;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .tip-item p {
+            color: var(--text-light);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+        
+        .tip-photo {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        
+        .tip-photo-caption {
+            padding: 0.8rem 1.5rem;
+            background: rgba(0,0,0,0.03);
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-style: italic;
+        }
+        
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+            border-radius: 3px;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            background: var(--calm-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.65rem;
+            top: 1.5rem;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border: 3px solid var(--primary-color);
+            border-radius: 50%;
+        }
+        
+        .timeline-item h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+        
+        .timeline-item p {
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+        
+        .timeline-photo {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        /* Community Section */
+        .community-section {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .community-section h2 {
+            color: var(--text-dark);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .community-section p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .community-btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(93, 173, 226, 0.3);
+        }
+        
+        .community-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(93, 173, 226, 0.4);
+        }
+        
+        /* Contact Form */
+        .contact-section {
+            background: white;
+            padding: 3rem 2rem;
+            max-width: 600px;
+            margin: 3rem auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+        
+        .contact-section h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            color: var(--text-dark);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--border-light);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* CTA Button */
+        .cta-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--success-green);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(82, 190, 128, 0.3);
+        }
+        
+        .cta-btn:hover {
+            background: #229954;
+            transform: translateY(-2px);
+        }
+        
+        /* Auto-generated notice */
+        .auto-notice {
+            background: #fff9e6;
+            border-left: 4px solid #f39c12;
+            padding: 1.2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+        
+        .auto-notice strong {
+            color: #d68910;
+        }
+        
+        .auto-notice a {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                order: -1;
+            }
+            
+            #map {
+                height: 300px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .main-container {
+                padding: 0 1rem;
+            }
+            
+            .content-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">🚀 ReadyToStart</a>
+            <a href="index.html" class="back-link">← Back to Search</a>
+        </div>
+    </header>
+    
+    <!-- Loading State -->
+    <div id="loadingState" class="loading">
+        <div class="spinner"></div>
+        <h2>Finding your location...</h2>
+        <p>Gathering first-timer information & visuals</p>
+    </div>
+    
+    <!-- Main Content (Hidden initially) -->
+    <div id="mainContent" style="display: none;">
+        <div class="hero">
+            <div class="hero-content">
+                <h1 id="locationName">Loading...</h1>
+                <p class="subtitle" id="locationSubtitle">Your complete first-timer's guide with visuals</p>
+                <div id="customBadge" style="display: none;" class="custom-badge">
+                    <span id="badgeText">✨ Enhanced with real first-timer experiences</span>
+                </div>
+                
+                <!-- Helpful Buttons -->
+                <div class="helpful-section">
+                    <span>Was this guide helpful?</span>
+                    <button class="helpful-btn" id="helpfulYes" onclick="markHelpful(true)">
+                        👍 Yes <span class="helpful-count" id="yesCount">(0)</span>
+                    </button>
+                    <button class="helpful-btn" id="helpfulNo" onclick="markHelpful(false)">
+                        👎 No <span class="helpful-count" id="noCount">(0)</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-container">
+            <!-- Main Content Area -->
+            <div class="content-area">
+                <!-- Hero Location Photo -->
+                <div id="heroPhotoSection" style="display: none;">
+                    <img id="heroPhoto" src="" alt="Location" style="width: 100%; height: 400px; object-fit: cover; border-radius: 0;">
+                    <div style="padding: 1rem 2rem; background: var(--calm-bg); border-bottom: 1px solid var(--border-light);">
+                        <p id="heroPhotoCaption" style="color: var(--text-light); font-style: italic; margin: 0;"></p>
+                    </div>
+                </div>
+                
+                <!-- Auto-generated notice (shown when no custom tips) -->
+                <div id="autoNotice" class="auto-notice" style="display: none; margin: 2rem;">
+                    <strong>📝 Auto-Generated Guide:</strong> This guide was automatically created. 
+                    Know this place well? <a href="mailto:readytostart.github@gmail.com?subject=First-timer%20tips%20for%20[Location]">Share your first-timer tips!</a>
+                </div>
+                
+                <!-- First-Timer Tips with Photos -->
+                <div id="tipsSection" class="content-section" style="display: none;">
+                    <h2>💡 First-Timer Tips - What Nobody Tells You</h2>
+                    <div id="tipsList">
+                        <!-- Tips populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- What to Expect Timeline -->
+                <div id="timelineSection" class="content-section" style="display: none;">
+                    <h2>🎯 What to Expect - Step by Step</h2>
+                    <div id="timelineContent" class="timeline">
+                        <!-- Timeline populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Map Card -->
+                <div class="sidebar-card">
+                    <h3>📍 Location & Map</h3>
+                    <div id="map"></div>
+                    <p id="addressInfo" style="font-size: 0.9rem; color: var(--text-light);">
+                        <!-- Address populated by JavaScript -->
+                    </p>
+                </div>
+                
+                <!-- Street View Card -->
+                <div class="sidebar-card">
+                    <h3>👁️ Street View</h3>
+                    <div id="streetview"></div>
+                </div>
+                
+                <!-- Quick Info Card -->
+                <div class="sidebar-card" id="quickInfoCard" style="display: none;">
+                    <h3>⚡ Quick Info</h3>
+                    <div id="quickInfo">
+                        <!-- Quick info populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Directions Button -->
+                <a href="#" id="directionsBtn" class="cta-btn" style="text-align: center; display: block;">
+                    🗺️ Get Directions
+                </a>
+            </div>
+        </div>
+        
+        <!-- Community Contribution Section -->
+        <div class="community-section">
+            <h2>🌟 Been Here? Share Your Experience!</h2>
+            <p>Your first-timer tips help thousands of nervous travelers feel confident. Every photo, tip, or story makes a difference!</p>
+            <a href="mailto:readytostart.github@gmail.com?subject=First-timer%20tips%20for%20[LOCATION]&body=Hi!%20I%27ve%20been%20to%20this%20location%20and%20want%20to%20share%20my%20first-timer%20experience.%0A%0ALocation%3A%20%0A%0AMy%20Tips%3A%0A1.%20%0A2.%20%0A3.%20%0A%0AWhat%20I%20wish%20I%20knew%20before%3A%20%0A%0A%28Optional%29%20Photos%3A%20Please%20attach%20any%20relevant%20photos!" class="community-btn" id="shareBtn">
+                Share Your Story
+            </a>
+        </div>
+        
+        <!-- Contact Form -->
+        <div class="contact-section">
+            <h2>💬 Questions or Suggestions?</h2>
+            <form id="contactForm" onsubmit="handleContact(event)">
+                <div class="form-group">
+                    <label for="contactName">Name</label>
+                    <input type="text" id="contactName" required>
+                </div>
+                <div class="form-group">
+                    <label for="contactEmail">Email</label>
+                    <input type="email" id="contactEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="contactMessage">Message</label>
+                    <textarea id="contactMessage" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Include AI generation and caching system -->
+    <script src="cache-manager.js"></script>
+    <script src="ai-generator.js"></script>
+    <script src="country-loader.js"></script>
+    <script src="korea.js"></script>
+    <script src="japan.js"></script>
+    <script src="sports.js"></script>
+    
+    <script>
+        // IMPORTANT: Replace with your actual Google Maps API key
+        const API_KEY = 'AIzaSyB_GKAoEnP9zyZxolYiD8eb4zUxx4bH72Y';
+        
+        let map, panorama, place, customTipsData;
+        let helpfulData = { yes: 0, no: 0, voted: false };
+        
+        // Photo URLs for each location - FEAR-FOCUSED theme
+        // Each photo addresses a specific fear or concern
+        const locationPhotos = {
+            "N Seoul Tower": {
+                "winding_road": {
+                    url: "https://images.unsplash.com/photo-1449074427733-e8dfa59b8262?w=800&h=500&fit=crop",
+                    caption: "The winding road with clear signs and barriers - locals drive this daily!",
+                    fallback: "🛣️ Winding Road"
+                },
+                "parking": {
+                    url: "https://images.unsplash.com/photo-1590674899484-d5640e854abe?w=800&h=500&fit=crop",
+                    caption: "Parking attendants in orange vests guide every car - you're not alone!",
+                    fallback: "🅿️ Parking Area"
+                }
+            },
+            
+            "Gangnam": {
+                "subway_station": {
+                    url: "https://images.unsplash.com/photo-1583468323330-9032ad490fed?w=800&h=500&fit=crop",
+                    caption: "Gangnam Station with clear English signs - navigation is easier than you think",
+                    fallback: "🚇 Station"
+                },
+                "street_scene": {
+                    url: "https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=800&h=500&fit=crop",
+                    caption: "Typical evening crowd - busy but manageable, everyone's just walking",
+                    fallback: "🏙️ Street"
+                }
+            },
+            
+            "Myeongdong": {
+                "shopping_street": {
+                    url: "https://images.unsplash.com/photo-1441986380878-c4248f5b8b5b?w=800&h=500&fit=crop",
+                    caption: "Main shopping street on weekday afternoon - crowds are manageable",
+                    fallback: "🛍️ Shopping"
+                },
+                "street_food": {
+                    url: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&h=500&fit=crop",
+                    caption: "Street food vendors setting up around 5 PM - the fun begins!",
+                    fallback: "🍡 Food"
+                }
+            },
+            
+            "Hongdae": {
+                "street_art": {
+                    url: "https://images.unsplash.com/photo-1569163139394-de4798aa62b6?w=800&h=500&fit=crop",
+                    caption: "Colorful street art in side alleys - the real Hongdae charm",
+                    fallback: "🎨 Art"
+                },
+                "young_crowd": {
+                    url: "https://images.unsplash.com/photo-1542224566-6e85f2e6772f?w=800&h=500&fit=crop",
+                    caption: "Weekend evening vibe - energetic but friendly, all ages welcome",
+                    fallback: "👥 Scene"
+                }
+            },
+            
+            "COEX Mall": {
+                "library": {
+                    url: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&h=500&fit=crop",
+                    caption: "Starfield Library on weekday morning - peaceful browsing possible",
+                    fallback: "📚 Library"
+                },
+                "mall_interior": {
+                    url: "https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=800&h=500&fit=crop",
+                    caption: "Underground mall corridors - well-lit and clearly marked with signs",
+                    fallback: "🏬 Mall"
+                }
+            },
+            
+            "Dongdaemun Design Plaza": {
+                "night_view": {
+                    url: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&h=500&fit=crop",
+                    caption: "DDP illuminated at night - stunning architecture, easy to photograph",
+                    fallback: "🌃 Night"
+                },
+                "interior": {
+                    url: "https://images.unsplash.com/photo-1505852679233-d9fd70aff56d?w=800&h=500&fit=crop",
+                    caption: "Spacious interior with ramps (no stairs!) - accessible for everyone",
+                    fallback: "🏛️ Interior"
+                }
+            },
+            
+            "Bukchon Hanok Village": {
+                "narrow_street": {
+                    url: "https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=800&h=500&fit=crop",
+                    caption: "Steep alleys in early morning - peaceful before tour groups arrive",
+                    fallback: "🏘️ Alley"
+                },
+                "hanbok_rental": {
+                    url: "https://images.unsplash.com/photo-1509023464722-18d996393ca8?w=800&h=500&fit=crop",
+                    caption: "Visitors in hanbok taking photos - rental shops everywhere, easy to join!",
+                    fallback: "👘 Hanbok"
+                }
+            },
+            
+            "Insadong": {
+                "traditional_street": {
+                    url: "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&h=500&fit=crop",
+                    caption: "Main street on Sunday (car-free day) - relaxed pedestrian atmosphere",
+                    fallback: "🎋 Street"
+                },
+                "tea_house": {
+                    url: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=800&h=500&fit=crop",
+                    caption: "Traditional tea house interior - quiet escape from shopping crowds",
+                    fallback: "🍵 Tea"
+                }
+            },
+            
+            "Gyeongbokgung Palace": {
+                "main_gate": {
+                    url: "https://images.unsplash.com/photo-1532960401447-59f4706e1243?w=800&h=500&fit=crop",
+                    caption: "Main gate with tourists in hanbok - wearing hanbok gets you FREE entry!",
+                    fallback: "🏯 Gate"
+                },
+                "palace_grounds": {
+                    url: "https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=800&h=500&fit=crop",
+                    caption: "Spacious palace grounds on weekday - plenty of room to explore calmly",
+                    fallback: "⛩️ Grounds"
+                }
+            },
+            
+            "Changdeokgung Palace": {
+                "secret_garden": {
+                    url: "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?w=800&h=500&fit=crop",
+                    caption: "Secret Garden in fall - book your tour online 2-3 days ahead!",
+                    fallback: "🌳 Garden"
+                },
+                "palace_path": {
+                    url: "https://images.unsplash.com/photo-1505672678657-cc7037095e60?w=800&h=500&fit=crop",
+                    caption: "Garden walking path - paved but uneven, wear comfortable shoes",
+                    fallback: "🚶 Path"
+                }
+            },
+            
+            "Lotte World": {
+                "theme_park": {
+                    url: "https://images.unsplash.com/photo-1509023464722-18d996393ca8?w=800&h=500&fit=crop",
+                    caption: "Indoor section on Tuesday - see the difference from weekend crowds!",
+                    fallback: "🎢 Park"
+                },
+                "crowd_level": {
+                    url: "https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=800&h=500&fit=crop",
+                    caption: "Weekend crowd at popular ride - arrive early or come on weekdays",
+                    fallback: "👨‍👩‍👧‍👦 Crowd"
+                }
+            },
+            
+            "Itaewon": {
+                "main_street": {
+                    url: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&h=500&fit=crop",
+                    caption: "Main Itaewon street - English signs everywhere, expat-friendly area",
+                    fallback: "🌍 Street"
+                },
+                "international_food": {
+                    url: "https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=800&h=500&fit=crop",
+                    caption: "International restaurant district - authentic cuisine from around the world",
+                    fallback: "🍽️ Food"
+                }
+            },
+            
+            "Han River Parks": {
+                "picnic_area": {
+                    url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=500&fit=crop",
+                    caption: "Sunset picnic at Yeouido - locals order delivery right to the park!",
+                    fallback: "🌅 Picnic"
+                },
+                "bike_path": {
+                    url: "https://images.unsplash.com/photo-1474552226712-ac0f0961a954?w=800&h=500&fit=crop",
+                    caption: "Bike rental station - ₩3,000/hour, bike paths connect all parks",
+                    fallback: "🚴 Bikes"
+                }
+            },
+            
+            "Cheonggyecheon Stream": {
+                "stream_walk": {
+                    url: "https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=800&h=500&fit=crop",
+                    caption: "Stream walkway in city center - 5-10°C cooler than street level!",
+                    fallback: "💧 Stream"
+                },
+                "lantern_festival": {
+                    url: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&h=500&fit=crop",
+                    caption: "Lantern Festival in November - thousands of free lanterns to enjoy",
+                    fallback: "🏮 Lanterns"
+                }
+            },
+            
+            "Gwangjang Market": {
+                "food_stalls": {
+                    url: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&h=500&fit=crop",
+                    caption: "Evening food stalls - the ajummas are friendly! Smile and try everything",
+                    fallback: "🍜 Food"
+                },
+                "bindaetteok": {
+                    url: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=800&h=500&fit=crop",
+                    caption: "Fresh bindaetteok (mung bean pancake) being made - market specialty!",
+                    fallback: "🥞 Pancake"
+                }
+            },
+            
+            "Noryangjin Fish Market": {
+                "live_seafood": {
+                    url: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&h=500&fit=crop",
+                    caption: "Live seafood tanks - buy downstairs, cook upstairs system explained",
+                    fallback: "🦞 Seafood"
+                },
+                "market_scene": {
+                    url: "https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=800&h=500&fit=crop",
+                    caption: "Early morning auction scene - arrive at 5 AM to watch from observation deck",
+                    fallback: "🐟 Market"
+                }
+            },
+            
+            "Namdaemun Market": {
+                "market_entrance": {
+                    url: "https://images.unsplash.com/photo-1441986380878-c4248f5b8b5b?w=800&h=500&fit=crop",
+                    caption: "Main market entrance on weekday - 10,000+ stalls, grab a map at info center",
+                    fallback: "🏪 Entrance"
+                },
+                "food_alley": {
+                    url: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&h=500&fit=crop",
+                    caption: "Food alley near Gate 5 - famous hotteok (sweet pancakes) for ₩1,000",
+                    fallback: "🥟 Food"
+                }
+            },
+            
+            "Olympic Park": {
+                "cherry_blossoms": {
+                    url: "https://images.unsplash.com/photo-1522383225653-ed111181a951?w=800&h=500&fit=crop",
+                    caption: "Cherry blossom path in early April - arrive by 8 AM on weekends for parking",
+                    fallback: "🌸 Blossoms"
+                },
+                "park_size": {
+                    url: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=500&fit=crop",
+                    caption: "Vast park grounds - rent bikes or take free shuttle, walking it all is exhausting",
+                    fallback: "🌳 Park"
+                }
+            },
+            
+            "Seoul Sky Observatory": {
+                "observation_deck": {
+                    url: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=800&h=500&fit=crop",
+                    caption: "123rd floor view - book sunset tickets 2-3 weeks ahead, they sell out fast",
+                    fallback: "🏙️ View"
+                },
+                "glass_floor": {
+                    url: "https://images.unsplash.com/photo-1486299267070-83823f5448dd?w=800&h=500&fit=crop",
+                    caption: "Glass floor on 120th floor - safe but terrifying! Remove shoes to walk on it",
+                    fallback: "👟 Floor"
+                }
+            },
+            
+            "Jogyesa Temple": {
+                "temple_courtyard": {
+                    url: "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&h=500&fit=crop",
+                    caption: "Peaceful courtyard in city center - free entry, donation box available",
+                    fallback: "🛕 Temple"
+                },
+                "lanterns": {
+                    url: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&h=500&fit=crop",
+                    caption: "Buddha's Birthday lanterns in May - thousands of colorful lanterns at night",
+                    fallback: "🏮 Lanterns"
+                }
+            },
+            
+            "DMZ Tour": {
+                "tour_bus": {
+                    url: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&h=500&fit=crop",
+                    caption: "Tour bus departure - BRING YOUR PASSPORT! They check at checkpoints",
+                    fallback: "🚌 Bus"
+                },
+                "jsa_dress": {
+                    url: "https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?w=800&h=500&fit=crop",
+                    caption: "JSA dress code example - no ripped jeans, no logos, business casual required",
+                    fallback: "👔 Dress"
+                }
+            },
+            
+            "Namdaemun Gate": {
+                "gate_view": {
+                    url: "https://images.unsplash.com/photo-1532960401447-59f4706e1243?w=800&h=500&fit=crop",
+                    caption: "National Treasure No. 1 in traffic circle - use underground passage to reach it",
+                    fallback: "🏛️ Gate"
+                }
+            }
+        };
+        
+        // Helper function to get photo with fallback
+        function getPhoto(locationKey, photoKey) {
+            const location = locationPhotos[locationKey];
+            if (!location) return null;
+            
+            const photo = location[photoKey];
+            if (!photo) return null;
+            
+            return {
+                url: photo.url,
+                caption: photo.caption,
+                fallback: createFallbackSVG(photo.fallback)
+            };
+        }
+        
+        // Create SVG fallback if image fails to load
+        function createFallbackSVG(text) {
+            return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='500'%3E%3Crect fill='%235dade2' width='800' height='500'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='40'%3E${encodeURIComponent(text)}%3C/text%3E%3C/svg%3E`;
+        }
+        
+        // Get location from URL parameter
+        function getLocationFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('location') || params.get('q');
+        }
+        
+        // Initialize the page
+        async function initPage() {
+            const searchLocation = getLocationFromURL();
+            
+            if (!searchLocation) {
+                document.getElementById('loadingState').innerHTML = 
+                    '<h2>No location specified</h2><p><a href="index.html">Go back to search</a></p>';
+                return;
+            }
+            
+            // Load helpful counts from localStorage
+            loadHelpfulCounts(searchLocation);
+            
+            // Use country loader to get location data
+            const result = await countryLoader.getTipsForLocation(searchLocation);
+            
+            console.log('Search result:', result);
+            
+            if (result.found && result.data && result.data.has_custom_content) {
+                // Update share button and page with resolved name
+                updateShareButton(result.resolvedName || searchLocation);
+                
+                // Show source badge
+                showSourceBadge(result.source);
+                
+                // Hide sidebar if it's an activity (no location/map needed)
+                if (result.isActivity) {
+                    document.querySelector('.sidebar').style.display = 'none';
+                    document.querySelector('.main-container').style.gridTemplateColumns = '1fr';
+                }
+                
+                // Show "did you mean?" if we corrected the spelling
+                if (result.resolvedName && result.resolvedName !== searchLocation) {
+                    showCorrectionNotice(searchLocation, result.resolvedName);
+                }
+                
+                // Load custom content
+                customTipsData = result.data;
+                loadCustomContent(result.resolvedName || searchLocation, result.isActivity || false);
+            } else {
+                // Show suggestions if available
+                if (result.suggestions && result.suggestions.length > 0) {
+                    showSuggestions(searchLocation, result.suggestions);
+                } else {
+                    // Update share button with original search
+                    updateShareButton(searchLocation);
+                    // Load auto-generated content
+                    loadAutoGeneratedContent(searchLocation);
+                }
+            }
+        }
+        
+        // Show source badge based on where content came from
+        function showSourceBadge(source) {
+            const badge = document.getElementById('customBadge');
+            const badgeText = document.getElementById('badgeText');
+            
+            if (!badge || !badgeText) return;
+            
+            badge.style.display = 'inline-block';
+            
+            switch(source) {
+                case 'manual':
+                    badgeText.textContent = '✨ Hand-crafted guide with verified first-timer tips';
+                    break;
+                case 'cached':
+                    badgeText.textContent = '🤖 AI-generated guide (cached for consistency)';
+                    break;
+                case 'ai-generated':
+                    badgeText.textContent = '🤖 Freshly generated AI guide';
+                    break;
+                case 'basic':
+                    badgeText.textContent = '📝 Auto-generated basic guide';
+                    break;
+                default:
+                    badge.style.display = 'none';
+            }
+        }
+        
+        // Show "Did you mean?" notice
+        function showCorrectionNotice(originalQuery, correctedName) {
+            const notice = document.createElement('div');
+            notice.style.cssText = 'background: #e8f8f5; border-left: 4px solid #52be80; padding: 1rem; margin: 1rem 2rem; border-radius: 8px;';
+            notice.innerHTML = `
+                <strong style="color: #229954;">✓ Found it!</strong> 
+                Showing results for <strong>"${correctedName}"</strong> 
+                <span style="color: #5d6d7e;">(you searched: "${originalQuery}")</span>
+            `;
+            
+            const mainContent = document.getElementById('mainContent');
+            mainContent.insertBefore(notice, mainContent.firstChild);
+        }
+        
+        // Show suggestions when location not found
+        function showSuggestions(searchQuery, suggestions) {
+            document.getElementById('loadingState').innerHTML = `
+                <h2>Location Not Found</h2>
+                <p style="margin: 1rem 0;">We couldn't find "<strong>${searchQuery}</strong>" in our database.</p>
+                
+                ${suggestions.length > 0 ? `
+                    <div style="background: white; padding: 2rem; border-radius: 12px; max-width: 600px; margin: 2rem auto; text-align: left;">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Did you mean one of these?</h3>
+                        ${suggestions.map(name => `
+                            <a href="search-results.html?location=${encodeURIComponent(name)}" 
+                               style="display: block; padding: 1rem; margin: 0.5rem 0; background: #f8f9fa; 
+                                      border-radius: 8px; color: #2c3e50; text-decoration: none; 
+                                      border-left: 4px solid var(--primary-color); transition: all 0.3s;">
+                                <strong>${name}</strong> →
+                            </a>
+                        `).join('')}
+                    </div>
+                ` : ''}
+                
+                <div style="margin-top: 2rem;">
+                    <a href="index.html" style="display: inline-block; padding: 1rem 2rem; background: var(--primary-color); 
+                       color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">
+                        ← Try Another Search
+                    </a>
+                    <p style="margin-top: 1rem; color: #5d6d7e;">
+                        Or <a href="mailto:readytostart.github@gmail.com?subject=Location Request: ${encodeURIComponent(searchQuery)}" 
+                              style="color: var(--primary-color); font-weight: 600;">request this location</a>
+                    </p>
+                </div>
+            `;
+        }
+        
+        // Load hero photo for location
+        async function loadHeroPhoto(searchLocation, isActivity = false) {
+            const heroSection = document.getElementById('heroPhotoSection');
+            const heroPhoto = document.getElementById('heroPhoto');
+            const heroCaption = document.getElementById('heroPhotoCaption');
+            
+            // For activities, use generic activity photo
+            if (isActivity) {
+                const activityPhoto = getActivityPhoto(searchLocation);
+                heroPhoto.src = activityPhoto.url;
+                heroPhoto.alt = searchLocation;
+                heroCaption.textContent = activityPhoto.caption;
+                heroSection.style.display = 'block';
+                return;
+            }
+            
+            // Map of known locations to specific photos
+            const heroPhotos = {
+                'N Seoul Tower': {
+                    url: 'https://images.unsplash.com/photo-1583474398619-b79d2635e0a6?w=1200&h=400&fit=crop',
+                    caption: 'N Seoul Tower overlooking the city - a Seoul landmark you can conquer!'
+                },
+                'Gangnam': {
+                    url: 'https://images.unsplash.com/photo-1583468323330-9032ad490fed?w=1200&h=400&fit=crop',
+                    caption: 'Gangnam district - modern Seoul at its finest'
+                },
+                'Myeongdong': {
+                    url: 'https://images.unsplash.com/photo-1441986380878-c4248f5b8b5b?w=1200&h=400&fit=crop',
+                    caption: 'Myeongdong shopping street - a shopper\'s paradise'
+                },
+                'Hongdae': {
+                    url: 'https://images.unsplash.com/photo-1569163139394-de4798aa62b6?w=1200&h=400&fit=crop',
+                    caption: 'Hongdae - youthful energy and street art'
+                },
+                'Bukchon Hanok Village': {
+                    url: 'https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=1200&h=400&fit=crop',
+                    caption: 'Bukchon Hanok Village - traditional Korean beauty'
+                },
+                'Gyeongbokgung Palace': {
+                    url: 'https://images.unsplash.com/photo-1532960401447-59f4706e1243?w=1200&h=400&fit=crop',
+                    caption: 'Gyeongbokgung Palace - Korea\'s grandest royal palace'
+                }
+            };
+            
+            // Check if we have a pre-defined photo
+            let photoData = null;
+            for (const [key, value] of Object.entries(heroPhotos)) {
+                if (searchLocation.toLowerCase().includes(key.toLowerCase()) || 
+                    key.toLowerCase().includes(searchLocation.toLowerCase())) {
+                    photoData = value;
+                    break;
+                }
+            }
+            
+            // If no pre-defined photo, fetch from Unsplash
+            if (!photoData) {
+                try {
+                    photoData = await fetchUnsplashPhoto(searchLocation);
+                } catch (error) {
+                    console.log('Failed to fetch Unsplash photo, using fallback');
+                    photoData = {
+                        url: `https://source.unsplash.com/1200x400/?${encodeURIComponent(searchLocation)},travel,landmark`,
+                        caption: `${searchLocation} - your first-timer adventure awaits!`
+                    };
+                }
+            }
+            
+            // Set photo and show section
+            heroPhoto.src = photoData.url;
+            heroPhoto.alt = searchLocation;
+            heroCaption.textContent = photoData.caption;
+            heroSection.style.display = 'block';
+            
+            // Add error handler for fallback
+            heroPhoto.onerror = function() {
+                this.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%221200%22 height=%22400%22%3E%3Crect fill=%22%235dade2%22 width=%221200%22 height=%22400%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2240%22%3E' + encodeURIComponent(searchLocation) + '%3C/text%3E%3C/svg%3E';
+            };
+        }
+        
+        // Fetch photo from Unsplash for dynamic locations
+        async function fetchUnsplashPhoto(locationName) {
+            // Using Unsplash Source API (no API key needed!)
+            // This automatically fetches a relevant photo
+            const query = encodeURIComponent(locationName + ' travel landmark');
+            return {
+                url: `https://source.unsplash.com/1200x400/?${query}`,
+                caption: `${locationName} - your first-timer guide with confidence!`
+            };
+        }
+        
+        // Get activity-themed photo
+        function getActivityPhoto(activityName) {
+            const activity = activityName.toLowerCase();
+            
+            // Map activities to photo themes
+            let theme = 'fitness,exercise';
+            if (activity.includes('pickleball') || activity.includes('tennis')) theme = 'racket,sport';
+            else if (activity.includes('yoga')) theme = 'yoga,meditation';
+            else if (activity.includes('gym')) theme = 'gym,fitness';
+            else if (activity.includes('climb')) theme = 'climbing,mountain';
+            else if (activity.includes('swim')) theme = 'swimming,pool';
+            else if (activity.includes('conference')) theme = 'conference,business';
+            else if (activity.includes('temple') || activity.includes('mosque')) theme = 'temple,spiritual';
+            else if (activity.includes('ceremony')) theme = 'ceremony,tradition';
+            
+            return {
+                url: `https://source.unsplash.com/1200x400/?${theme}`,
+                caption: `${activityName} - we'll help you feel confident!`
+            };
+        }
+        
+        // Load custom content (from korea.js or AI-generated)
+        function loadCustomContent(searchLocation, isActivity = false) {
+            // Show custom badge
+            document.getElementById('customBadge').style.display = 'inline-block';
+            
+            // Load hero photo (with activity awareness)
+            loadHeroPhoto(searchLocation, isActivity);
+            
+            // Set title
+            document.getElementById('locationName').textContent = customTipsData.display_name;
+            
+            // Show quick info in sidebar
+            if (customTipsData.quick_info) {
+                const quickInfoHTML = `
+                    <div class="quick-info-item">
+                        <div class="icon">⏰</div>
+                        <div class="info">
+                            <div class="label">Best Time</div>
+                            <div class="value">${customTipsData.quick_info.best_time}</div>
+                        </div>
+                    </div>
+                    <div class="quick-info-item">
+                        <div class="icon">🚗</div>
+                        <div class="info">
+                            <div class="label">Getting There</div>
+                            <div class="value">${customTipsData.quick_info.driving_time}</div>
+                        </div>
+                    </div>
+                    <div class="quick-info-item">
+                        <div class="icon">🅿️</div>
+                        <div class="info">
+                            <div class="label">Parking</div>
+                            <div class="value">${customTipsData.quick_info.parking_fee}</div>
+                        </div>
+                    </div>
+                    <div class="quick-info-item">
+                        <div class="icon">🎫</div>
+                        <div class="info">
+                            <div class="label">Entry Fee</div>
+                            <div class="value">${customTipsData.quick_info.entry_fee}</div>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('quickInfo').innerHTML = quickInfoHTML;
+                document.getElementById('quickInfoCard').style.display = 'block';
+            }
+            
+            // Show first-timer tips with photos
+            if (customTipsData.first_timer_tips && customTipsData.first_timer_tips.length > 0) {
+                const locationKey = Object.keys(locationPhotos).find(key => 
+                    searchLocation.toLowerCase().includes(key.toLowerCase())
+                );
+                
+                const tipsHTML = customTipsData.first_timer_tips.map((tip, index) => {
+                    // Match photos to specific tips based on keywords
+                    let photo = null;
+                    
+                    if (locationKey) {
+                        const tipLower = tip.title.toLowerCase();
+                        
+                        // Smart keyword matching for fear-focused photos
+                        if (tipLower.includes('road') || tipLower.includes('winding') || tipLower.includes('curves') || tipLower.includes('driving')) {
+                            photo = getPhoto(locationKey, 'winding_road');
+                        } else if (tipLower.includes('parking') || tipLower.includes('park')) {
+                            photo = getPhoto(locationKey, 'parking');
+                        } else if (tipLower.includes('jacket') || tipLower.includes('cold') || tipLower.includes('windy')) {
+                            photo = getPhoto(locationKey, 'jacket');
+                        } else if (tipLower.includes('crowd') || tipLower.includes('busy')) {
+                            photo = getPhoto(locationKey, 'crowd_level') || getPhoto(locationKey, 'young_crowd') || getPhoto(locationKey, 'street_scene');
+                        } else if (tipLower.includes('subway') || tipLower.includes('station') || tipLower.includes('exit')) {
+                            photo = getPhoto(locationKey, 'subway_station');
+                        } else if (tipLower.includes('street') || tipLower.includes('alley')) {
+                            photo = getPhoto(locationKey, 'narrow_street') || getPhoto(locationKey, 'main_street') || getPhoto(locationKey, 'shopping_street');
+                        } else if (tipLower.includes('food')) {
+                            photo = getPhoto(locationKey, 'street_food') || getPhoto(locationKey, 'food_stalls') || getPhoto(locationKey, 'international_food');
+                        } else if (tipLower.includes('tourist') || tipLower.includes('group')) {
+                            photo = getPhoto(locationKey, 'tourists') || getPhoto(locationKey, 'hanbok_rental');
+                        } else if (tipLower.includes('library') || tipLower.includes('starfield')) {
+                            photo = getPhoto(locationKey, 'library');
+                        } else if (tipLower.includes('temple')) {
+                            photo = getPhoto(locationKey, 'temple_courtyard') || getPhoto(locationKey, 'lanterns');
+                        } else if (tipLower.includes('palace') || tipLower.includes('hanok')) {
+                            photo = getPhoto(locationKey, 'main_gate') || getPhoto(locationKey, 'palace_grounds') || getPhoto(locationKey, 'secret_garden');
+                        } else if (tipLower.includes('market')) {
+                            photo = getPhoto(locationKey, 'food_stalls') || getPhoto(locationKey, 'market_entrance') || getPhoto(locationKey, 'live_seafood');
+                        } else if (tipLower.includes('passport') || tipLower.includes('dmz') || tipLower.includes('dress')) {
+                            photo = getPhoto(locationKey, 'tour_bus') || getPhoto(locationKey, 'jsa_dress');
+                        } else if (tipLower.includes('bike') || tipLower.includes('picnic')) {
+                            photo = getPhoto(locationKey, 'bike_path') || getPhoto(locationKey, 'picnic_area');
+                        } else if (tipLower.includes('view') || tipLower.includes('observation') || tipLower.includes('glass')) {
+                            photo = getPhoto(locationKey, 'observation_deck') || getPhoto(locationKey, 'glass_floor');
+                        }
+                    }
+                    
+                    return `
+                        <div class="tip-item">
+                            <div class="tip-content">
+                                <h3>${tip.title}</h3>
+                                <p>${tip.content}</p>
+                            </div>
+                            ${photo ? `
+                                <img src="${photo.url}" 
+                                     alt="${tip.title}" 
+                                     class="tip-photo" 
+                                     onerror="this.src='${photo.fallback}'">
+                                <div class="tip-photo-caption">${photo.caption}</div>
+                            ` : ''}
+                        </div>
+                    `;
+                }).join('');
+                
+                document.getElementById('tipsList').innerHTML = tipsHTML;
+                document.getElementById('tipsSection').style.display = 'block';
+            }
+            
+            // Show timeline with photos
+            if (customTipsData.timeline && customTipsData.timeline.length > 0) {
+                const timelineHTML = customTipsData.timeline.map((item, index) => `
+                    <div class="timeline-item">
+                        <h3>${item.title}</h3>
+                        <p>${item.content}</p>
+                    </div>
+                `).join('');
+                
+                document.getElementById('timelineContent').innerHTML = timelineHTML;
+                document.getElementById('timelineSection').style.display = 'block';
+            }
+            
+            // Load Google Maps for this location (skip for activities)
+            if (customTipsData.coordinates && !isActivity) {
+                loadGoogleMapsAPI(searchLocation, customTipsData.coordinates);
+            } else if (!isActivity) {
+                loadGoogleMapsAPI(searchLocation);
+            } else {
+                // For activities, hide loading and show content immediately
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+            }
+        }
+        
+        // Load auto-generated content
+        function loadAutoGeneratedContent(searchLocation) {
+            // Show auto-notice
+            document.getElementById('autoNotice').style.display = 'block';
+            
+            // Set title
+            document.getElementById('locationName').textContent = searchLocation;
+            
+            // Load Google Maps
+            loadGoogleMapsAPI(searchLocation);
+        }
+        
+        // Initialize Google Maps
+        function initMap() {
+            const searchLocation = getLocationFromURL();
+            const coords = customTipsData?.coordinates;
+            
+            if (coords) {
+                // Use provided coordinates
+                const location = new google.maps.LatLng(coords.lat, coords.lng);
+                createMapAndMarker(location, searchLocation);
+            } else {
+                // Geocode the location
+                const geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ address: searchLocation }, (results, status) => {
+                    if (status === 'OK' && results[0]) {
+                        const location = results[0].geometry.location;
+                        createMapAndMarker(location, searchLocation, results[0].formatted_address);
+                    } else {
+                        document.getElementById('loadingState').innerHTML = 
+                            `<h2>Location not found</h2>
+                             <p>We couldn't find "${searchLocation}". Try searching for a more specific location.</p>
+                             <a href="index.html" style="display: inline-block; margin-top: 1rem; padding: 1rem 2rem; background: var(--primary-color); color: white; text-decoration: none; border-radius: 8px;">Back to Search</a>`;
+                    }
+                });
+            }
+        }
+        
+        // Create map and marker
+        function createMapAndMarker(location, name, address) {
+            // Create map
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: location,
+                mapTypeId: 'roadmap',
+                styles: [
+                    {
+                        "featureType": "water",
+                        "elementType": "geometry",
+                        "stylers": [{ "color": "#a0d6eb" }]
+                    }
+                ]
+            });
+            
+            // Add marker
+            const marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                title: name,
+                animation: google.maps.Animation.DROP
+            });
+            
+            // Info window
+            const infoWindow = new google.maps.InfoWindow({
+                content: `<div style="padding: 10px;"><h3>${name}</h3><p>You are here! 🎯</p></div>`
+            });
+            
+            marker.addListener('click', () => {
+                infoWindow.open(map, marker);
+            });
+            
+            // Set address info
+            if (address) {
+                document.getElementById('addressInfo').innerHTML = 
+                    `<strong>Address:</strong> ${address}`;
+            } else {
+                document.getElementById('addressInfo').innerHTML = 
+                    `<strong>Coordinates:</strong> ${location.lat().toFixed(4)}° N, ${location.lng().toFixed(4)}° E`;
+            }
+            
+            // Initialize Street View
+            panorama = new google.maps.StreetViewPanorama(
+                document.getElementById('streetview'),
+                {
+                    position: location,
+                    pov: { heading: 165, pitch: 0 },
+                    zoom: 1
+                }
+            );
+            
+            map.setStreetView(panorama);
+            
+            // Set directions button
+            document.getElementById('directionsBtn').onclick = function(e) {
+                e.preventDefault();
+                window.open(`https://www.google.com/maps/dir/?api=1&destination=${location.lat()},${location.lng()}`, '_blank');
+            };
+            
+            // Hide loading, show content
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        }
+        
+        // Load Google Maps API
+        function loadGoogleMapsAPI(searchLocation, coords) {
+            if (API_KEY === 'AIzaSyB_GKAoEnP9zyZxolYiD8eb4zUxx4bH72Y') {
+                document.getElementById('loadingState').innerHTML = 
+                    '<h2>API Key Not Configured</h2><p>Please add your Google Maps API key to see the map.</p>';
+                return;
+            }
+            
+            const script = document.createElement('script');
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places&callback=initMap`;
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+        }
+        
+        // Helpful buttons functionality
+        function markHelpful(isHelpful) {
+            if (helpfulData.voted) {
+                alert('You\'ve already voted! Thank you for your feedback 😊');
+                return;
+            }
+            
+            const searchLocation = getLocationFromURL();
+            
+            if (isHelpful) {
+                helpfulData.yes++;
+                document.getElementById('helpfulYes').classList.add('active');
+            } else {
+                helpfulData.no++;
+                document.getElementById('helpfulNo').classList.add('active');
+            }
+            
+            helpfulData.voted = true;
+            
+            // Save to localStorage
+            localStorage.setItem(`helpful_${searchLocation}`, JSON.stringify(helpfulData));
+            
+            // Update display
+            document.getElementById('yesCount').textContent = `(${helpfulData.yes})`;
+            document.getElementById('noCount').textContent = `(${helpfulData.no})`;
+            
+            // Thank user
+            setTimeout(() => {
+                alert(isHelpful ? 
+                    'Thank you! Your feedback helps us improve 🙏' : 
+                    'Thanks for your feedback! We\'ll work on making this better 💪'
+                );
+            }, 300);
+        }
+        
+        // Load helpful counts from localStorage
+        function loadHelpfulCounts(location) {
+            const saved = localStorage.getItem(`helpful_${location}`);
+            if (saved) {
+                helpfulData = JSON.parse(saved);
+            }
+            
+            document.getElementById('yesCount').textContent = `(${helpfulData.yes})`;
+            document.getElementById('noCount').textContent = `(${helpfulData.no})`;
+            
+            if (helpfulData.voted) {
+                if (helpfulData.yes > 0) document.getElementById('helpfulYes').classList.add('active');
+                if (helpfulData.no > 0) document.getElementById('helpfulNo').classList.add('active');
+            }
+        }
+        
+        // Update share button with location name
+        function updateShareButton(location) {
+            const btn = document.getElementById('shareBtn');
+            const currentHref = btn.getAttribute('href');
+            btn.setAttribute('href', currentHref.replace('[LOCATION]', encodeURIComponent(location)));
+        }
+        
+        // Handle contact form
+        function handleContact(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const message = document.getElementById('contactMessage').value;
+            
+            const subject = `ReadyToStart Contact: Message from ${name}`;
+            const body = `Name: ${name}%0AEmail: ${email}%0A%0AMessage:%0A${encodeURIComponent(message)}`;
+            
+            window.location.href = `mailto:readytostart.github@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`;
+            
+            // Clear form
+            document.getElementById('contactForm').reset();
+            alert('Opening your email client... Thank you for reaching out! 📧');
+        }
+        
+        // Initialize when page loads
+        window.addEventListener('load', initPage);
+    </script>
+</body>
+</html>
