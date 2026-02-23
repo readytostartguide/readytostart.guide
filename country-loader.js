@@ -93,6 +93,25 @@ const countryLoader = {
       }
     },
     
+    // Japan
+    'japan': {
+      name: 'Japan',
+      script: 'japan.js',
+      keywords: ['japan', 'tokyo', 'kyoto', 'osaka', 'japanese', 'fuji', 'shibuya', 'shinjuku', 'fushimi', 'inari'],
+      cities: ['tokyo', 'kyoto', 'osaka', 'hiroshima', 'fukuoka', 'sapporo', 'nara', 'yokohama'],
+      aliases: {
+        'tokyo tower': 'Tokyo Tower',
+        'mount fuji': 'Mount Fuji',
+        'mt fuji': 'Mount Fuji',
+        'fuji san': 'Mount Fuji',
+        'fujisan': 'Mount Fuji',
+        'fushimi inari': 'Fushimi Inari Shrine',
+        'inari shrine': 'Fushimi Inari Shrine',
+        'torii gates': 'Fushimi Inari Shrine',
+        'thousand gates': 'Fushimi Inari Shrine'
+      }
+    },
+    
     // Global fallback for any location worldwide
     'global': {
       name: 'Worldwide',
