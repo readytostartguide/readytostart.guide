@@ -220,14 +220,34 @@ const countryLoader = {
   
   // Get location data from the loaded country
   getLocationData(searchQuery, countryCode) {
-    // Call the appropriate country's getter function
+    const normalized = searchQuery.trim();
+    
+    // Try to get data directly from the country's locations object
     switch(countryCode) {
       case 'korea':
-        return typeof getKoreaLocation === 'function' ? getKoreaLocation(searchQuery) : null;
-      // Future countries:
-      // case 'japan':
-      //   return typeof getJapanLocation === 'function' ? getJapanLocation(searchQuery) : null;
-      // case 'thailand':
+        if (typeof koreaLocations !== 'undefined' && koreaLocations[normalized]) {
+          return koreaLocations[normalized];
+        }
+        // Fallback to old function if it exists
+        return typeof getKoreaLocation === 'function' ? getKoreaLocation(normalized) : null;
+        
+      case 'japan':
+        if (typeof japanLocations !== 'undefined' && japanLocations[normalized]) {
+          return japanLocations[normalized];
+        }
+        return null;
+        
+      case 'global':
+        // Check if it's an activity from sports.js
+        if (typeof sportsActivities !== 'undefined' && sportsActivities[normalized]) {
+          return sportsActivities[normalized];
+        }
+        return null;
+        
+      default:
+        return null;
+    }
+  },
       //   return typeof getThailandLocation === 'function' ? getThailandLocation(searchQuery) : null;
       default:
         return null;
